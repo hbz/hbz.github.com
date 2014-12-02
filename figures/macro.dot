@@ -1,0 +1,37 @@
+digraph makro {
+
+	splines=false;
+	node[shape=record width=2.25 style=filled fillcolor=gainsboro]
+	graph[compound=true]
+	label="hbz macro architecture" 
+	
+	subgraph cluster_datenquellen {
+		label="data delivery platform"
+		files[label="e.g. data source B\n(e.g. format Y)"]
+		sonstige[label="e.g. data source A\n (e.g. format X)"]  
+	}
+	
+	subgraph cluster_datenmodule {
+		label="data modules\n(independently deployable)"
+		portale_hbz01[height=2 label="{e.g. Portale-hbz01|transformation(s)\n with Toolbox|unfied logging|unified HTTP-API}"]
+		lobid_organisations[height=2 label="{e.g. Lobid-Organisations|transformation(s)\n with Metafacture|unified logging|unified HTTP-API}"]
+		portale_hbz03[height=2 label="{e.g. Portale-hbz03|transformation(s)\n with Toolbox|unified logging|unified HTTP-API}"]
+		lobid_resources[height=2 label="{e.g. Lobid-Resources|transformation(s)\n with Metafacture|unified logging|unified HTTP-API}"]
+		
+		sonstige->lobid_organisations[lhead=cluster_datenmodule]
+		files->portale_hbz03[lhead=cluster_datenmodule]
+	}
+	
+	subgraph cluster_applikationsmodule {
+		label="application modules\n(independently deployable)"
+		nwbib[label="{e.g. NWBib|unified logging}"]
+		edoweb[label="{e.g. Edoweb|unified logging}"]
+		digibib[label="{e.g. Digibib|unified logging}"]
+		
+		portale_hbz01->edoweb[lhead=cluster_applikationsmodule tailport="s"]
+		lobid_resources->edoweb[lhead=cluster_applikationsmodule tailport="s"]
+		lobid_organisations->edoweb[lhead=cluster_applikationsmodule]
+		portale_hbz03->edoweb[lhead=cluster_applikationsmodule]
+	}
+	
+}

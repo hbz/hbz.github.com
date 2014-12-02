@@ -1,0 +1,16 @@
+digraph {
+	rankdir=LR
+	node[shape=box style=filled fillcolor=gainsboro width=1]
+	
+	db[label="Aleph\nDB"]
+	rdf[label="RDF\nN-Triples"]
+	json[label="JSON-LD\nAPI"]
+	apps[label="Our Apps"]
+	third[label="3rd Party"]
+	
+	db->rdf[label="craft\n(with Metafacture)"]
+	rdf->json[label=generate]
+	json->apps
+	json->third
+	rdf->third 
+}

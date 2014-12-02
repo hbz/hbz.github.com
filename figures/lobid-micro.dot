@@ -1,0 +1,50 @@
+digraph lobid_modules{
+	node[shape=box width=2.5 height=0.8 style=solid label=""]//fontname=helvetica
+	edge[arrowhead=empty arrowtail=empty] //fontname=helvetica
+	graph[compound=true] //fontname=helvetica
+	subgraph cluster_macro{
+		label="hbz macro architecture"
+		subgraph cluster_datasets {
+			label="hbz dataset modules"
+			labelloc=b
+			subgraph cluster_dataset {
+				label="dataset module\nlobid micro architecture"
+				labelloc=t
+				style=filled
+				color=lightgrey
+				transformation[label="Transformation\nMetafacture\nJava, XML"]
+				index[label="1 Index\nElasticsearch\nJSON, HTTP"]
+				api[label="HTTP API\nPlayframework\nJava"]
+				transformation->index[label=""]
+				index->api[ label=""]
+			}
+			subgraph cluster_dataset_x {
+				label="dataset module\n X" 
+				labelloc=t
+				style=filled
+				color=lightgrey
+				node[shape=none]
+				t->i->api_x[style=invis]
+			}
+		}
+		subgraph cluster_applications {
+			label="hbz application modules"
+			subgraph cluster_application {
+				label="application module\nlobid micro architecture"
+				labelloc=b
+				style=filled
+				color=lightgrey
+				client[label="HTTP Client\nPlayframework\nHTML, CSS, JS"]
+				api->client[fontname="anonymous" fontsize=11.25  label=" JSON-LD via HTTP GET:\n /<index>/<id>, /<index>?q=<*>,\n /<index>/context.jsonld" lhead="cluster_applications" ltail="cluster_datasets"]
+			}
+			subgraph cluster_application_x {
+				label="application module\n X"
+				labelloc=b
+				style=filled
+				color=lightgrey
+				node[shape=none]
+				api_x->client_x[ lhead="cluster_applications" ltail="cluster_datasets"]
+			}
+		}
+	}
+}
