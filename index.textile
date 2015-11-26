@@ -11,7 +11,7 @@
 
 <div class="h1">hbz &hearts; open source</div>
 
-p(lead). The hbz library service centre (Hochschulbibliothekszentrum des Landes Nordrhein-Westfalen) is a service and development agency for library and information systems. We are a federal state authority under the Ministry of Innovation, Science and Research of the German state of North Rhine-Westphalia (NRW). We build software to create, transform an publish bibliographic data. We're increasingly creating our systems as open source software on GitHub: "https://github.com/hbz":https://github.com/hbz
+p(lead). The hbz library service centre (Hochschulbibliothekszentrum des Landes Nordrhein-Westfalen) is a service and development agency for library and information systems. We are a federal state authority under the Ministry of Innovation, Science and Research of the German state of North Rhine-Westphalia (NRW). We build software to create, transform and publish bibliographic data. We're increasingly creating our systems as open source software on GitHub: "https://github.com/hbz":https://github.com/hbz
 
 The source for this document is maintained at "https://github.com/hbz/hbz.github.com":https://github.com/hbz/hbz.github.com
 
