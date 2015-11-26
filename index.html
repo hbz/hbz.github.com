@@ -10,63 +10,82 @@
 		<p><div class="pull-right"></p>
 		<ol class="toc" style="list-style: none;">
 			<li>
-				<a href="#Commonarchitecture">Common architecture</a>
+				<a href="#common-architecture">Common architecture</a>
 				<ol style="list-style: none;">
 					<li>
-						<a href="#Macroarchitecture">Macro architecture</a>
+						<a href="#macro-architecture">Macro architecture</a>
 					</li>
 					<li>
-						<a href="#Microarchitecture">Micro architecture</a>
+						<a href="#micro-architecture">Micro architecture</a>
 					</li>
 				</ol>
 			</li>
 			<li>
-				<a href="#Datamodules">Data modules</a>
+				<a href="#data-modules">Data modules</a>
 				<ol style="list-style: none;">
 					<li>
-						<a href="#lobid">lobid</a>
+						<a href="#data-modules-lobid">lobid</a>
 					</li>
 					<li>
-						<a href="#lobidorganisations">lobid-organisations</a>
+						<a href="#data-modules-lobid-organisations">lobid-organisations</a>
 					</li>
 					<li>
-						<a href="#mabxmlelasticsearch">mabxml-elasticsearch</a>
+						<a href="#data-modules-mabxml">mabxml-elasticsearch</a>
 					</li>
 				</ol>
 			</li>
 			<li>
-				<a href="#Applicationmodules">Application modules</a>
+				<a href="#application-modules">Application modules</a>
 				<ol style="list-style: none;">
 					<li>
-						<a href="#NWBib">NWBib</a>
+						<a href="#application-modules-nwbib">NWBib</a>
 					</li>
 					<li>
-						<a href="#Edoweb">Edoweb</a>
+						<a href="#application-modules-edoweb">Edoweb</a>
 					</li>
 					<li>
-						<a href="#OERworldmap">OER world map</a>
+						<a href="#application-modules-oer-world-map">OER world map</a>
 					</li>
 				</ol>
 			</li>
 			<li>
-				<a href="#Lobid">Lobid</a>
+				<a href="#lobid">Lobid</a>
 				<ol style="list-style: none;">
 					<li>
-						<a href="#LobidAPI1.x">Lobid API 1.x</a>
+						<a href="#lobid-api-1">Lobid API 1.x</a>
+						<ol style="list-style: none;">
+							<li>
+								<a href="#lobid-api-1-monolithic-approach">Monolithic appraoch</a>
+							</li>
+							<li>
+								<a href="#lobid-api-1-complex-workflow">Complex workflow</a>
+							</li>
+							<li>
+								<a href="#lobid-api-1-generated-json">Generated JSON</a>
+							</li>
+						</ol>
 					</li>
 					<li>
-						<a href="#LobidAPI2.x">Lobid API 2.x</a>
+						<a href="#lobid-api-2">Lobid API 2.x</a>
 					</li>
 					<li>
-						<a href="#Lobidmicroarchitecture">Lobid micro architecture</a>
+						<a href="#lobid-micro-architecture">Lobid micro architecture</a>
+						<ol style="list-style: none;">
+							<li>
+								<a href="#lobid-data-modules">Lobid data modules</a>
+							</li>
+							<li>
+								<a href="#lobid-application-modules">Lobid application modules</a>
+							</li>
+						</ol>
 					</li>
 				</ol>
 			</li>
 			<li>
-				<a href="#Metafacture">Metafacture</a>
+				<a href="#metafacture">Metafacture</a>
 			</li>
 			<li>
-				<a href="#Eclipse">Eclipse</a>
+				<a href="#eclipse">Eclipse</a>
 			</li>
 		</ol>
 		<p></div></p>
@@ -80,45 +99,45 @@
 		<p>The source for this document is maintained at 
 			<a href="https://github.com/hbz/hbz.github.com">https://github.com/hbz/hbz.github.com</a>
 		</p>
-		<h2 id="Commonarchitecture">Common architecture</h2>
+		<h2 id="common-architecture">Common architecture</h2>
 		<p>At hbz, we&#8217;re aiming to establish a common macro architecture to enable interoperability of data and application modules developed by different groups. The main idea of that macro architecture is to provide independently deployable, self-contained modules that communicate over HTTP.</p>
-		<h3 id="Macroarchitecture">Macro architecture</h3>
+		<h3 id="macro-architecture">Macro architecture</h3>
 		<p>The goal of the macro architecture is to provide a level of integration for heterogenous software components, written in different languages and using different technologies. Not all current components conform to the architecture, and not all are open source. For an overview, see the following diagram.</p>
 		<p>
 			<img style="width:750px" border="0" src="figures/macro.png"/>
 		</p>
-		<h3 id="Microarchitecture">Micro architecture</h3>
+		<h3 id="micro-architecture">Micro architecture</h3>
 		<p>The micro architecture of the individual modules is not mandated on an organisation-wide level.</p>
 		<p>For a sample micro architecture, see the Lobid micro architecture (which uses Metafacture for data transformations) below.</p>
-		<h2 id="Datamodules">Data modules</h2>
+		<h2 id="data-modules">Data modules</h2>
 		<p>Some data modules that are available on GitHub are described below.</p>
-		<h3 id="lobid">lobid</h3>
+		<h3 id="data-modules-lobid">lobid</h3>
 		<p><span class="label label-success">macro-data</span> <span class="label label-warning">micro-1.0</span></p>
 		<p>
 			<a href="https://github.com/hbz/lobid">https://github.com/hbz/lobid</a>
 		</p>
 		<p>The lobid repo is the implementation of the current lobid service. It roughly conforms to the common macro architecture for data modules (it provides a JSON-LD API) and is based on the initial Lobid 1.0 data module micro architecture (see below for details).</p>
-		<h3 id="lobidorganisations">lobid-organisations</h3>
+		<h3 id="data-modules-lobid-organisations">lobid-organisations</h3>
 		<p><span class="label label-success">macro-data</span> <span class="label label-success">micro-2.0</span></p>
 		<p>
 			<a href="https://github.com/hbz/lobid-organisations">https://github.com/hbz/lobid-organisations</a>
 		</p>
 		<p>The lobid-organisations repo is a replacement for the lobid-organisations part of the current Lobid service. It contains additional data (DBS) and conforms to the common data module macro architecture and is the reference implementation for the new Lobid data module micro architecture (see above for details).</p>
-		<h3 id="mabxmlelasticsearch">mabxml-elasticsearch</h3>
+		<h3 id="data-modules-mabxml">mabxml-elasticsearch</h3>
 		<p><span class="label label-success">macro-data</span> <span class="label label-success">micro-2.0</span></p>
 		<p>
 			<a href="https://github.com/hbz/mabxml-elasticsearch">https://github.com/hbz/mabxml-elasticsearch</a>
 		</p>
 		<p>The mabxml-elasticsearch repo contains a complementary part of the current Lobid service. It roughly conforms to the common data module macro architecture and the Lobid data module micro architcture (provides an HTTP API via direct access to Elasticsearch).</p>
-		<h2 id="Applicationmodules">Application modules</h2>
+		<h2 id="application-modules">Application modules</h2>
 		<p>Some application modules that are available on GitHub are described below.</p>
-		<h3 id="NWBib">NWBib</h3>
+		<h3 id="application-modules-nwbib">NWBib</h3>
 		<p><span class="label label-success">macro-app</span> <span class="label label-success">micro-app</span></p>
 		<p>
 			<a href="http://github.com/hbz/nwbib">http://github.com/hbz/nwbib</a>
 		</p>
 		<p>NWBib is the official regional bibliography for the German state of North-Rhine Westfalia. It is implemented as an application on top of the Lobid API and is the reference implementation for the Lobid application module micro architecture (see above for details).</p>
-		<h3 id="Edoweb">Edoweb</h3>
+		<h3 id="application-modules-edoweb">Edoweb</h3>
 		<p><span class="label label-success">macro-app</span> <span class="label label-default">micro-mix</span></p>
 		<p>
 			<a href="https://github.com/edoweb">https://github.com/edoweb</a>
@@ -126,14 +145,14 @@
 		<p>Edoweb predates the hbz GitHub organisation. Its repos can be found in the 
 			<a href="https://github.com/edoweb">https://github.com/edoweb</a> organisation. It is implemented as an application on top of the Lobid API, conforming to the application module macro architecture. Its micro architecture is a mix of components that conform to the Lobid micro architecture (Elasticsearch, Playframework) and a Drupal-based UI.
 		</p>
-		<h3 id="OERworldmap">OER world map</h3>
+		<h3 id="application-modules-oer-world-map">OER world map</h3>
 		<p><span class="label label-default">macro-mix</span> <span class="label label-default">micro-mix</span></p>
 		<p>
 			<a href="https://github.com/hbz/oerworldmap">https://github.com/hbz/oerworldmap</a>
 		</p>
 		<p>In 2014, hbz has developed a prototype for an OER world map, funded by the Hewlett Foundation. The prototype is self-contained, and does not use any data modules in our macro architecture. It&#8217;s data micro architecture is a mix of Lobid 1.0 style transformations (Metafacture crafting N-Triples), indexing (generated, non-nested JSON-LD in Elasticsearch) and API (Playframework). The UI is based on Drupal.</p>
 		<p>In 2015, hbz and Felix Ostrowski will implement a productive version of an OER world map, again funded by the Hewlett Foundation.</p>
-		<h2 id="Lobid">Lobid</h2>
+		<h2 id="lobid">Lobid</h2>
 		<p>
 			<img style="height:50px" align="right" border="0" src="logos/lobid.png"/>
 		</p>
@@ -149,16 +168,16 @@
 		<p>The code that implements the web API for Lobid can be found in the 
 			<a href="https://github.com/hbz/lobid">https://github.com/hbz/lobid</a> repo. For information on the Lobid data workflow see the included readme file.
 		</p>
-		<h3 id="LobidAPI1.x">Lobid API 1.x</h3>
+		<h3 id="lobid-api-1">Lobid API 1.x</h3>
 		<p>With increasing usage, we realized that the implementation of Lobid has several issues that we started adressing in new modules and their repos.</p>
-		<h4 id="Monolithicappraoch">Monolithic appraoch</h4>
+		<h4 id="lobid-api-1-monolithic-approach">Monolithic appraoch</h4>
 		<p>All data sets are handled in a single repo, resulting in complected code. Classes for one dataset transformation are used in others, meaning developers have to grasp the complexity of all datasets before being able to work on and extend the code. Continuous integration runs a lot of untouched parts with every change, resulting in long build times.</p>
-		<h4 id="Complexworkflow">Complex workflow</h4>
+		<h4 id="lobid-api-1-complex-workflow">Complex workflow</h4>
 		<p>Our workflow involves many processing steps, including Hadoop. Hadoop has turned out as not ideal for our use case, as we are using a map file to share state between processes (see the 
 			<a href="https://github.com/lobid/lodmill">https://github.com/lobid/lodmill</a> repo for details), which does not scale well. With a different appraoch, using Hadoop might still be an option, e.g. in the context of the 
 			<a href="https://github.com/culturegraph/metafacture-cluster">https://github.com/culturegraph/metafacture-cluster</a> repo (see below for information on Metafacture).
 		</p>
-		<h4 id="GeneratedJSON">Generated JSON</h4>
+		<h4 id="lobid-api-1-generated-json">Generated JSON</h4>
 		<p>The resulting JSON that we index in Elasticsearch is cumbersome to work with and limits usage: as it is JSON-LD generated from N-Triples, it has a serial structure of multiple, unnamed objects in an array under the 
 			<code>graph</code> key, instead of nested values in a typical JSON fashion. For details, see 
 			<a href="https://github.com/hbz/lobid/issues/1">https://github.com/hbz/lobid/issues/1</a>. Besides providing an inconvenient API, the format also limits our usage of Elasticsearch features: due to the non-nested structure, we cannot address specific labels in queries (like the creator&#8217;s 
@@ -169,7 +188,7 @@
 		<p>
 			<img style="width:500px" border="0" src="figures/lobid-1.png"/>
 		</p>
-		<h3 id="LobidAPI2.x">Lobid API 2.x</h3>
+		<h3 id="lobid-api-2">Lobid API 2.x</h3>
 		<p><span class="label label-success">macro-data</span> <span class="label label-success">micro-2.0</span></p>
 		<p>Based on the issues we experienced with the first iteration of our Elasticsearch-based Web API, we are working on a revised approach, which we refer to as Lobid API 2.0. The general idea is to craft the representation that we actually deliver, that forms our API, and generate alternative representation, instead of the other way, as described above:</p>
 		<p>
@@ -178,7 +197,7 @@
 		<p>We have implemented this approach for the lobid-organisations dataset at 
 			<a href="https://github.com/hbz/lobid-organisations">https://github.com/hbz/lobid-organisations</a>. We plan to adapt this to the current lobid-resources transformation.
 		</p>
-		<h3 id="Lobidmicroarchitecture">Lobid micro architecture</h3>
+		<h3 id="lobid-micro-architecture">Lobid micro architecture</h3>
 		<p><span class="label label-success">micro-2.0</span> <span class="label label-success">micro-app</span></p>
 		<p>For increased reuse, we&#8217;re trying to apply the idea of a unified macro (see above) and micro architecture to the development of new Lobid modules. For reference implementations of the Lobid micro architecture, see 
 			<a href="https://github.com/hbz/lobid-organisations">https://github.com/hbz/lobid-organisations</a> (data module) and 
@@ -187,15 +206,15 @@
 		<p>
 			<img style="width:500px" border="0" src="figures/lobid-micro.png"/>
 		</p>
-		<h4 id="Lobiddatamodules">Lobid data modules</h4>
+		<h4 id="lobid-data-modules">Lobid data modules</h4>
 		<p>
 			<em>Lobid data modules</em> are implemented with Metafacture, Elasticsearch, and the Playframework. A basic idea of the Lobid micro architecture is to provide a focused, independently deployable module that does one thing: provide 1 data set, with 1 Elasticsearch index (and thus, 1 index config file), 1 build, 1 CI config, 1 README. The goal is to have a single point of entry for each of these project facets.
 		</p>
-		<h4 id="Lobidapplicationmodules">Lobid application modules</h4>
+		<h4 id="lobid-application-modules">Lobid application modules</h4>
 		<p>
 			<em>Lobid application modules</em> share this general goal of a focussed module that does one thing. They should usually not require a Metafacture transformation (which suggests an additional data module), but may use an app-specific Elasticsearch index. They implement their HTTP data communication, URL routes, and HTML/JS/CSS rendering with the Playframework.
 		</p>
-		<h2 id="Metafacture">Metafacture</h2>
+		<h2 id="metafacture">Metafacture</h2>
 		<p>
 			<img style="height:50px" align="right" border="0" src="logos/metafacture.png"/>
 		</p>
@@ -205,7 +224,7 @@
 			<a href="https://github.com/hbz/metafacture-core">https://github.com/hbz/metafacture-core</a> and provide pure Java (without Flux) sample transformations at 
 			<a href="https://github.com/hbz/metafacture-java-examples">https://github.com/hbz/metafacture-java-examples</a>.
 		</p>
-		<h2 id="Eclipse">Eclipse</h2>
+		<h2 id="eclipse">Eclipse</h2>
 		<p>
 			<img style="height:75px" align="right" border="0" src="logos/eclipse.jpg"/>
 		</p>

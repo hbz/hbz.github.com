@@ -15,27 +15,27 @@ p(lead). The hbz library service centre (Hochschulbibliothekszentrum des Landes 
 
 The source for this document is maintained at "https://github.com/hbz/hbz.github.com":https://github.com/hbz/hbz.github.com
 
-h2. Common architecture
+h2(#common-architecture). Common architecture
 
 At hbz, we're aiming to establish a common macro architecture to enable interoperability of data and application modules developed by different groups. The main idea of that macro architecture is to provide independently deployable, self-contained modules that communicate over HTTP.
 
-h3. Macro architecture
+h3(#macro-architecture). Macro architecture
 
 The goal of the macro architecture is to provide a level of integration for heterogenous software components, written in different languages and using different technologies. Not all current components conform to the architecture, and not all are open source. For an overview, see the following diagram.
 
 !{width:750px}figures/macro.png!
 
-h3. Micro architecture
+h3(#micro-architecture). Micro architecture
 
 The micro architecture of the individual modules is not mandated on an organisation-wide level.
 
 For a sample micro architecture, see the Lobid micro architecture (which uses Metafacture for data transformations) below.
 
-h2. Data modules
+h2(#data-modules). Data modules
 
 Some data modules that are available on GitHub are described below.
 
-h3. lobid
+h3(#data-modules-lobid). lobid
 
 <span class="label label-success">macro-data</span> <span class="label label-warning">micro-1.0</span>
 
@@ -43,7 +43,7 @@ h3. lobid
 
 The lobid repo is the implementation of the current lobid service. It roughly conforms to the common macro architecture for data modules (it provides a JSON-LD API) and is based on the initial Lobid 1.0 data module micro architecture (see below for details).
 
-h3. lobid-organisations
+h3(#data-modules-lobid-organisations). lobid-organisations
 
 <span class="label label-success">macro-data</span> <span class="label label-success">micro-2.0</span>
 
@@ -51,7 +51,7 @@ h3. lobid-organisations
 
 The lobid-organisations repo is a replacement for the lobid-organisations part of the current Lobid service. It contains additional data (DBS) and conforms to the common data module macro architecture and is the reference implementation for the new Lobid data module micro architecture (see above for details).
 
-h3. mabxml-elasticsearch
+h3(#data-modules-mabxml). mabxml-elasticsearch
 
 <span class="label label-success">macro-data</span> <span class="label label-success">micro-2.0</span>
 
@@ -59,11 +59,11 @@ h3. mabxml-elasticsearch
 
 The mabxml-elasticsearch repo contains a complementary part of the current Lobid service. It roughly conforms to the common data module macro architecture and the Lobid data module micro architcture (provides an HTTP API via direct access to Elasticsearch).
 
-h2. Application modules
+h2(#application-modules). Application modules
 
 Some application modules that are available on GitHub are described below.
 
-h3. NWBib
+h3(#application-modules-nwbib). NWBib
 
 <span class="label label-success">macro-app</span> <span class="label label-success">micro-app</span>
 
@@ -71,7 +71,7 @@ h3. NWBib
 
 NWBib is the official regional bibliography for the German state of North-Rhine Westfalia. It is implemented as an application on top of the Lobid API and is the reference implementation for the Lobid application module micro architecture (see above for details).
 
-h3. Edoweb
+h3(#application-modules-edoweb). Edoweb
 
 <span class="label label-success">macro-app</span> <span class="label label-default">micro-mix</span>
 
@@ -79,7 +79,7 @@ h3. Edoweb
 
 Edoweb predates the hbz GitHub organisation. Its repos can be found in the "https://github.com/edoweb":https://github.com/edoweb organisation. It is implemented as an application on top of the Lobid API, conforming to the application module macro architecture. Its micro architecture is a mix of components that conform to the Lobid micro architecture (Elasticsearch, Playframework) and a Drupal-based UI.
 
-h3. OER world map
+h3(#application-modules-oer-world-map). OER world map
 
 <span class="label label-default">macro-mix</span> <span class="label label-default">micro-mix</span>
 
@@ -89,7 +89,7 @@ In 2014, hbz has developed a prototype for an OER world map, funded by the Hewle
 
 In 2015, hbz and Felix Ostrowski will implement a productive version of an OER world map, again funded by the Hewlett Foundation.
 
-h2. Lobid
+h2(#lobid). Lobid
 
 !{height:50px}>logos/lobid.png!
 
@@ -101,19 +101,19 @@ The code that generates the data provided by Lobid can be found in the "https://
 
 The code that implements the web API for Lobid can be found in the "https://github.com/hbz/lobid":https://github.com/hbz/lobid repo. For information on the Lobid data workflow see the included readme file.
 
-h3. Lobid API 1.x
+h3(#lobid-api-1). Lobid API 1.x
 
 With increasing usage, we realized that the implementation of Lobid has several issues that we started adressing in new modules and their repos.
 
-h4. Monolithic appraoch
+h4(#lobid-api-1-monolithic-approach). Monolithic appraoch
 
 All data sets are handled in a single repo, resulting in complected code. Classes for one dataset transformation are used in others, meaning developers have to grasp the complexity of all datasets before being able to work on and extend the code. Continuous integration runs a lot of untouched parts with every change, resulting in long build times.
 
-h4. Complex workflow
+h4(#lobid-api-1-complex-workflow). Complex workflow
 
 Our workflow involves many processing steps, including Hadoop. Hadoop has turned out as not ideal for our use case, as we are using a map file to share state between processes (see the "https://github.com/lobid/lodmill":https://github.com/lobid/lodmill repo for details), which does not scale well. With a different appraoch, using Hadoop might still be an option, e.g. in the context of the "https://github.com/culturegraph/metafacture-cluster":https://github.com/culturegraph/metafacture-cluster repo (see below for information on Metafacture).
 
-h4. Generated JSON
+h4(#lobid-api-1-generated-json). Generated JSON
 
 The resulting JSON that we index in Elasticsearch is cumbersome to work with and limits usage: as it is JSON-LD generated from N-Triples, it has a serial structure of multiple, unnamed objects in an array under the @graph@ key, instead of nested values in a typical JSON fashion. For details, see "https://github.com/hbz/lobid/issues/1":https://github.com/hbz/lobid/issues/1. Besides providing an inconvenient API, the format also limits our usage of Elasticsearch features: due to the non-nested structure, we cannot address specific labels in queries (like the creator's @preferredName@ vs. the subject's @preferredName@). Also, as we use URIs as keys in our (generated) JSON, we cannot use Elasticsearch's out of the box query string syntax for direct field access (URIs require lots of escaping in that context).
 
@@ -121,7 +121,7 @@ The general issue with the format is that it is not crafted to conform to our re
 
 !{width:500px}figures/lobid-1.png!
 
-h3. Lobid API 2.x
+h3(#lobid-api-2). Lobid API 2.x
 
 <span class="label label-success">macro-data</span> <span class="label label-success">micro-2.0</span>
 
@@ -131,7 +131,7 @@ Based on the issues we experienced with the first iteration of our Elasticsearch
 
 We have implemented this approach for the lobid-organisations dataset at "https://github.com/hbz/lobid-organisations":https://github.com/hbz/lobid-organisations. We plan to adapt this to the current lobid-resources transformation.
 
-h3. Lobid micro architecture
+h3(#lobid-micro-architecture). Lobid micro architecture
 
 <span class="label label-success">micro-2.0</span> <span class="label label-success">micro-app</span>
 
@@ -139,21 +139,21 @@ For increased reuse, we're trying to apply the idea of a unified macro (see abov
 
 !{width:500px}figures/lobid-micro.png!
 
-h4. Lobid data modules
+h4(#lobid-data-modules). Lobid data modules
 
 _Lobid data modules_ are implemented with Metafacture, Elasticsearch, and the Playframework. A basic idea of the Lobid micro architecture is to provide a focused, independently deployable module that does one thing: provide 1 data set, with 1 Elasticsearch index (and thus, 1 index config file), 1 build, 1 CI config, 1 README. The goal is to have a single point of entry for each of these project facets.
 
-h4. Lobid application modules
+h4(#lobid-application-modules). Lobid application modules
 
 _Lobid application modules_ share this general goal of a focussed module that does one thing. They should usually not require a Metafacture transformation (which suggests an additional data module), but may use an app-specific Elasticsearch index. They implement their HTTP data communication, URL routes, and HTML/JS/CSS rendering with the Playframework.
 
-h2. Metafacture
+h2(#metafacture). Metafacture
 
 !{height:50px}>logos/metafacture.png!
 
 Together with the German National Library (DNB) and other members of the library community, hbz established and contributes to Metafacture, a Java-based toolkit for processing library metadata. The official repos are hosted under the Culturegraph organisation on GitHub: "https://github.com/culturegraph":https://github.com/culturegraph. hbz maintains the Metafacture-IDE, an Eclipse-based IDE for working with Flux scripts (a workflow DSL provided by Metafacture) at "https://github.com/culturegraph/metafacture-ide":https://github.com/culturegraph/metafacture-ide. We also maintain a fork of the metafacture core library at "https://github.com/hbz/metafacture-core":https://github.com/hbz/metafacture-core and provide pure Java (without Flux) sample transformations at "https://github.com/hbz/metafacture-java-examples":https://github.com/hbz/metafacture-java-examples.
 
-h2. Eclipse
+h2(#eclipse). Eclipse
 
 !{height:75px}>logos/eclipse.jpg!
 
