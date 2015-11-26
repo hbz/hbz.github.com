@@ -1,7 +1,7 @@
 digraph lobid_modules{
-	node[shape=box width=2.5 height=0.8 style=solid label=""]//fontname=helvetica
-	edge[arrowhead=empty arrowtail=empty] //fontname=helvetica
-	graph[compound=true] //fontname=helvetica
+	node[shape=box width=2.5 height=0.8 style=solid label="" fontname=helvetica]
+	edge[arrowhead=empty arrowtail=empty fontname=helvetica]
+	graph[compound=true fontname=helvetica]
 	subgraph cluster_macro{
 		label="hbz macro architecture"
 		subgraph cluster_datasets {

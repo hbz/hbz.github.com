@@ -1,6 +1,8 @@
 digraph {
 	rankdir=LR
-	node[shape=box style=filled fillcolor=gainsboro width=1]
+	node[shape=box style=filled fillcolor=gainsboro width=1 fontname=helvetica]
+	graph[fontname=helvetica]
+	edge[fontname=helvetica]
 	
 	db[label="Aleph\nDB"]
 	rdf[label="RDF"]

@@ -1,8 +1,9 @@
 digraph makro {
 
 	splines=false;
-	node[shape=record width=2.25 style=filled fillcolor=gainsboro]
-	graph[compound=true]
+	node[shape=record width=2.25 style=filled fillcolor=gainsboro fontname=helvetica]
+	graph[compound=true fontname=helvetica]
+	edge[fontname=helvetica]
 	label="hbz macro architecture" 
 	
 	subgraph cluster_datenquellen {
