@@ -215,7 +215,7 @@
 		<p>For a unified view of all issues in the various repositories we us a board at 
 			<a href="https://waffle.io/hbz/lobid">https://waffle.io/hbz/lobid</a>.
 		</p>
-		<p>The columns of our board correspond to our development process from left to right:</p>
+		<p>The columns of our board correspond the subsequent stages of our development process, from left to right:</p>
 		<p>Backlog 
 			<code>-&gt;</code> Ready 
 			<code>-&gt;</code> Working 
@@ -223,14 +223,15 @@
 			<code>-&gt;</code> Deploy 
 			<code>-&gt;</code> Done
 		</p>
-		<h3 id="dev-process-stages">Process Stages</h3>
-		<h4 id="dev-process-backlog">Backlog</h4>
-		<p>The backlog contains all planned issues. They are not tagged with specific labels on GitHub. The other columns correspond to GitHub issues, i.e. moving a card from 
+		<p>Columns correspond to a specific label on GitHub issues, i.e. moving a card from 
 			<code>working</code> to 
 			<code>review</code> is the same as removing the 
 			<code>working</code> label and adding the 
-			<code>review</code> label in GitHub.
+			<code>review</code> label in GitHub. Issues without a label are located in the backlog column.
 		</p>
+		<h3 id="dev-process-stages">Process Stages</h3>
+		<h4 id="dev-process-backlog">Backlog</h4>
+		<p>The backlog contains all planned issues.</p>
 		<h4 id="dev-process-ready">Ready</h4>
 		<p>An item is 
 			<code>ready</code> if it&#8217;s possible to start working on it, i.e. there are no blocking dependencies and requirements are clear enough to start working. Dependencies are expressed through simple referencing of the blocking issue (e.g. 
