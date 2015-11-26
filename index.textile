@@ -147,6 +147,79 @@ h3(#lobid-application-modules). Lobid application modules
 
 _Lobid application modules_ share this general goal of a focussed module that does one thing. They should usually not require a Metafacture transformation (which suggests an additional data module), but may use an app-specific Elasticsearch index. They implement their HTTP data communication, URL routes, and HTML/JS/CSS rendering with the Playframework.
 
+h2(#dev-process). Lobid development process
+
+This section documents how we create software in the Lobid team at hbz.
+
+h3(#dev-process-github). GitHub
+
+We develop our software on GitHub. We don't publish the results of our development process on GitHub, but instead do the actual development (track issues, change code, discuss changes) in the open. Publishing our development process in this document is part of this transparent process.
+
+h4(#dev-process-github-flow). GitHub Flow
+
+We use the simple GitHub workflow: the master branch in always in a deployable state, new features are developed in feature branches, which are merged into the master branch using pull requests. See details on "the GitHub flow":https://guides.github.com/introduction/flow/.
+
+h4(#dev-process-github-issues). GitHub Issues
+
+We have different Git repositories under different GitHub organisations. New repositories are created under the "hbz organisation":http://github.com/hbz. We use GitHub issues to keep track of requirements, new features and bugs. Bugs (i.e. defects in existing functionality) are marked with the @bug@ label and are prioritized over new features.
+
+h3(#dev-process-waffle). Waffle Board
+
+For a unified view of all issues in the various repositories we us a board at "https://waffle.io/hbz/lobid":https://waffle.io/hbz/lobid.
+
+The columns of our board correspond to our development process from left to right:
+
+Backlog @->@ Ready @->@ Working @->@ Review @->@ Deploy @->@ Done
+
+h3(#dev-process-stages). Process Stages
+
+h4(#dev-process-backlog). Backlog
+
+The backlog contains all planned issues. They are not tagged with specific labels on GitHub. The other columns correspond to GitHub issues, i.e. moving a card from @working@ to @review@ is the same as removing the @working@ label and adding the @review@ label in GitHub.
+
+h4(#dev-process-ready). Ready
+
+An item is @ready@ if it's possible to start working on it, i.e. there are no blocking dependencies and requirements are clear enough to start working. Dependencies are expressed through simple referencing of the blocking issue (e.g. @dependes on #111@), see "details on referencing":https://guides.github.com/features/issues/#notifications. Prioritized items (like @bugs@) are moved to the top of the @ready@ column.
+
+h4(#dev-process-working). Working
+
+When we start working on an issue, we move it to the @working@ column. Ideally, every person should only work on one issue at a time. That way the @working@ column provides an overview of who is currently working on what.
+
+h4(#dev-process-review). Review
+
+When an issue is completed on the technical side, we push the corresponding commits to a feature branch that contains the corresponding issue number (and additional info for convenience), e.g. @issue-111-ui@. If possible, we then deploy the changes from the feature branch to our staging system (by merging the feature branch into the master branch of the staging system, therefore simulating what will happen when we deploy to production).
+
+We then open a pull request for the feature branch with a summary of the changes, a link to the corresponding issue, and instructions on how to test the behaviour on staging. We leave the pull request unassigned to signal to the team members that it is ready for code review. At the same time, we provide instructions on how to test the changes in the corresponding issue, and assign that to a dedicated team member (the product owner) for functional review. We finally move both cards to the @review@ column.
+
+We use Travis CI for continuous integration. The CI is integrated into the GitHub review process: when a pull request is opened, Travis builds the resulting merged code and provides feedback right in the pull request (you can see the build status in the pull request preview, before submitting the pull request). For details, see "this post":http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/. The developer who pushed the code should ensure the Travis build was successful before submitting the pull request for review.
+
+h4(#dev-process-deploy). Deploy
+
+The reviewers review the code and feature or bugfix based on the provided instructions (usually links to the staging system), and provide feedback on the code or functionality. For the code review, changes to the code are created in additional commits, which the developer pushes to the feature branch. They are added to the existing pull request automatically. See "details on pull requests":https://help.github.com/articles/using-pull-requests/. At the end of the code review, the reviewer merges the pull request, and deletes the corresponding branch. At the end of the functional review, the reviewer posts a @+1@ comment, moves the corresponding card to the @deploy@ column, and assigns it to the developer who submitted it for review, who deploys it to production.
+
+h4(#dev-process-done). Done
+
+When the changes are deployed to production, we add a comment in the corresponding issue with instructions on how to replicate the change in production (usually a link to the production system). We don't deploy to production on Fridays or before leaving for a vacation. We finally close the issue in GitHub or move it to the @done@ column in the board.
+
+h3(#dev-process-conventions). Conventions
+
+h4(#dev-process-coding-conventions). Coding Conventions
+
+We use a custom Eclipse formatter profile to ensure consistent formatting. We use custom Eclipse compiler settings to ensure consistent coding style. The settings are checked in to the repos and require no specific setup. Code that is submitted to review should contain no warnings in Eclipse. The formatting is applied automatically through "Eclipse Save Actions":http://www.eclipseonetips.com/2009/12/13/automatically-format-and-cleanup-code-every-time-you-save/.
+
+h4(#dev-process-git-conventions). Git Conventions
+
+Git commits should be as granular as possible. When working on a fix for issue X, we try not to add other things we notice (typos, formatting, refactorings, etc.) to the same commit. Eclipse has "UI for partial staging":http://eclipsesource.com/blogs/2014/06/03/git-partial-staging-in-eclipse/, which is very useful to keep commits focussed.
+
+h4(#dev-process-commit-messages). Commit Messages
+
+We follow the established conventions for Git commit messages: imperative mood (e.g. @Fix UI issue@, not @Fixes UI issue@), short lines (max 72 chars), and either just one line, or one line, a blank line, and one or more paragraphs. For details, see "these":http://chris.beams.io/posts/git-commit/ "posts":http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html.
+
+Every commit should be related to a GitHub issue. This allows us to understand why certain changes were applied. When committing to the same repo that contains the issue, it's enough to just mention the issue number with a prefixed @#@ mark, e.g. @Fix UI issue (#111)@. If the issue is in a different repo, we have to add the full link (in a paragraph under the summary line, see above).
+
+We don't use the GitHub shortcuts for closing issues from commits (like @fixes #111@), since in our process, the issue is not solved by the commit, but by the reviewed change, after it's deployed to production (see above). 
+
+
 h1(#metafacture). Metafacture
 
 !{height:50px}>logos/metafacture.png!

@@ -60,6 +60,9 @@
 					<li>
 						<a href="#lobid-micro-architecture">Lobid micro architecture</a>
 					</li>
+					<li>
+						<a href="#dev-process">Lobid development process</a>
+					</li>
 				</ol>
 			</li>
 			<li>
@@ -194,6 +197,95 @@
 		<h3 id="lobid-application-modules">Lobid application modules</h3>
 		<p>
 			<em>Lobid application modules</em> share this general goal of a focussed module that does one thing. They should usually not require a Metafacture transformation (which suggests an additional data module), but may use an app-specific Elasticsearch index. They implement their HTTP data communication, URL routes, and HTML/JS/CSS rendering with the Playframework.
+		</p>
+		<h2 id="dev-process">Lobid development process</h2>
+		<p>This section documents how we create software in the Lobid team at hbz.</p>
+		<h3 id="dev-process-github">GitHub</h3>
+		<p>We develop our software on GitHub. We don&#8217;t publish the results of our development process on GitHub, but instead do the actual development (track issues, change code, discuss changes) in the open. Publishing our development process in this document is part of this transparent process.</p>
+		<h4 id="dev-process-github-flow">GitHub Flow</h4>
+		<p>We use the simple GitHub workflow: the master branch in always in a deployable state, new features are developed in feature branches, which are merged into the master branch using pull requests. See details on 
+			<a href="https://guides.github.com/introduction/flow/">the GitHub flow</a>.
+		</p>
+		<h4 id="dev-process-github-issues">GitHub Issues</h4>
+		<p>We have different Git repositories under different GitHub organisations. New repositories are created under the 
+			<a href="http://github.com/hbz">hbz organisation</a>. We use GitHub issues to keep track of requirements, new features and bugs. Bugs (i.e. defects in existing functionality) are marked with the 
+			<code>bug</code> label and are prioritized over new features.
+		</p>
+		<h3 id="dev-process-waffle">Waffle Board</h3>
+		<p>For a unified view of all issues in the various repositories we us a board at 
+			<a href="https://waffle.io/hbz/lobid">https://waffle.io/hbz/lobid</a>.
+		</p>
+		<p>The columns of our board correspond to our development process from left to right:</p>
+		<p>Backlog 
+			<code>-&gt;</code> Ready 
+			<code>-&gt;</code> Working 
+			<code>-&gt;</code> Review 
+			<code>-&gt;</code> Deploy 
+			<code>-&gt;</code> Done
+		</p>
+		<h3 id="dev-process-stages">Process Stages</h3>
+		<h4 id="dev-process-backlog">Backlog</h4>
+		<p>The backlog contains all planned issues. They are not tagged with specific labels on GitHub. The other columns correspond to GitHub issues, i.e. moving a card from 
+			<code>working</code> to 
+			<code>review</code> is the same as removing the 
+			<code>working</code> label and adding the 
+			<code>review</code> label in GitHub.
+		</p>
+		<h4 id="dev-process-ready">Ready</h4>
+		<p>An item is 
+			<code>ready</code> if it&#8217;s possible to start working on it, i.e. there are no blocking dependencies and requirements are clear enough to start working. Dependencies are expressed through simple referencing of the blocking issue (e.g. 
+			<code>dependes on #111</code>), see 
+			<a href="https://guides.github.com/features/issues/#notifications">details on referencing</a>. Prioritized items (like 
+			<code>bugs</code>) are moved to the top of the 
+			<code>ready</code> column.
+		</p>
+		<h4 id="dev-process-working">Working</h4>
+		<p>When we start working on an issue, we move it to the 
+			<code>working</code> column. Ideally, every person should only work on one issue at a time. That way the 
+			<code>working</code> column provides an overview of who is currently working on what.
+		</p>
+		<h4 id="dev-process-review">Review</h4>
+		<p>When an issue is completed on the technical side, we push the corresponding commits to a feature branch that contains the corresponding issue number (and additional info for convenience), e.g. 
+			<code>issue-111-ui</code>. If possible, we then deploy the changes from the feature branch to our staging system (by merging the feature branch into the master branch of the staging system, therefore simulating what will happen when we deploy to production).
+		</p>
+		<p>We then open a pull request for the feature branch with a summary of the changes, a link to the corresponding issue, and instructions on how to test the behaviour on staging. We leave the pull request unassigned to signal to the team members that it is ready for code review. At the same time, we provide instructions on how to test the changes in the corresponding issue, and assign that to a dedicated team member (the product owner) for functional review. We finally move both cards to the 
+			<code>review</code> column.
+		</p>
+		<p>We use Travis CI for continuous integration. The CI is integrated into the GitHub review process: when a pull request is opened, Travis builds the resulting merged code and provides feedback right in the pull request (you can see the build status in the pull request preview, before submitting the pull request). For details, see 
+			<a href="http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/">this post</a>. The developer who pushed the code should ensure the Travis build was successful before submitting the pull request for review.
+		</p>
+		<h4 id="dev-process-deploy">Deploy</h4>
+		<p>The reviewers review the code and feature or bugfix based on the provided instructions (usually links to the staging system), and provide feedback on the code or functionality. For the code review, changes to the code are created in additional commits, which the developer pushes to the feature branch. They are added to the existing pull request automatically. See 
+			<a href="https://help.github.com/articles/using-pull-requests/">details on pull requests</a>. At the end of the code review, the reviewer merges the pull request, and deletes the corresponding branch. At the end of the functional review, the reviewer posts a 
+			<code>+1</code> comment, moves the corresponding card to the 
+			<code>deploy</code> column, and assigns it to the developer who submitted it for review, who deploys it to production.
+		</p>
+		<h4 id="dev-process-done">Done</h4>
+		<p>When the changes are deployed to production, we add a comment in the corresponding issue with instructions on how to replicate the change in production (usually a link to the production system). We don&#8217;t deploy to production on Fridays or before leaving for a vacation. We finally close the issue in GitHub or move it to the 
+			<code>done</code> column in the board.
+		</p>
+		<h3 id="dev-process-conventions">Conventions</h3>
+		<h4 id="dev-process-coding-conventions">Coding Conventions</h4>
+		<p>We use a custom Eclipse formatter profile to ensure consistent formatting. We use custom Eclipse compiler settings to ensure consistent coding style. The settings are checked in to the repos and require no specific setup. Code that is submitted to review should contain no warnings in Eclipse. The formatting is applied automatically through 
+			<a href="http://www.eclipseonetips.com/2009/12/13/automatically-format-and-cleanup-code-every-time-you-save/">Eclipse Save Actions</a>.
+		</p>
+		<h4 id="dev-process-git-conventions">Git Conventions</h4>
+		<p>Git commits should be as granular as possible. When working on a fix for issue X, we try not to add other things we notice (typos, formatting, refactorings, etc.) to the same commit. Eclipse has 
+			<a href="http://eclipsesource.com/blogs/2014/06/03/git-partial-staging-in-eclipse/">UI for partial staging</a>, which is very useful to keep commits focussed.
+		</p>
+		<h4 id="dev-process-commit-messages">Commit Messages</h4>
+		<p>We follow the established conventions for Git commit messages: imperative mood (e.g. 
+			<code>Fix UI issue</code>, not 
+			<code>Fixes UI issue</code>), short lines (max 72 chars), and either just one line, or one line, a blank line, and one or more paragraphs. For details, see 
+			<a href="http://chris.beams.io/posts/git-commit/">these</a> 
+			<a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">posts</a>.
+		</p>
+		<p>Every commit should be related to a GitHub issue. This allows us to understand why certain changes were applied. When committing to the same repo that contains the issue, it&#8217;s enough to just mention the issue number with a prefixed 
+			<code>#</code> mark, e.g. 
+			<code>Fix UI issue (#111)</code>. If the issue is in a different repo, we have to add the full link (in a paragraph under the summary line, see above).
+		</p>
+		<p>We don&#8217;t use the GitHub shortcuts for closing issues from commits (like 
+			<code>fixes #111</code>), since in our process, the issue is not solved by the commit, but by the reviewed change, after it&#8217;s deployed to production (see above). 
 		</p>
 		<h1 id="metafacture">Metafacture</h1>
 		<p>
