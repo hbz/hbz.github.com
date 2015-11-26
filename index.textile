@@ -167,15 +167,17 @@ h3(#dev-process-waffle). Waffle Board
 
 For a unified view of all issues in the various repositories we us a board at "https://waffle.io/hbz/lobid":https://waffle.io/hbz/lobid.
 
-The columns of our board correspond to our development process from left to right:
+The columns of our board correspond the subsequent stages of our development process, from left to right:
 
 Backlog @->@ Ready @->@ Working @->@ Review @->@ Deploy @->@ Done
+
+Columns correspond to a specific label on GitHub issues, i.e. moving a card from @working@ to @review@ is the same as removing the @working@ label and adding the @review@ label in GitHub. Issues without a label are located in the backlog column.
 
 h3(#dev-process-stages). Process Stages
 
 h4(#dev-process-backlog). Backlog
 
-The backlog contains all planned issues. They are not tagged with specific labels on GitHub. The other columns correspond to GitHub issues, i.e. moving a card from @working@ to @review@ is the same as removing the @working@ label and adding the @review@ label in GitHub.
+The backlog contains all planned issues.
 
 h4(#dev-process-ready). Ready
 
