@@ -25,6 +25,15 @@ The goal of the macro architecture is to provide a level of integration for hete
 
 !{width:750px}figures/macro.png!
 
+h3(#data-module-specification). Data module specification
+
+Data modules provide a unified HTTP API to integrate into the hbz macro architecture:
+
+- Prefix := Data modules use a URL path prefix corresponding to their data set. They provide module documentation at the prefix root. For example, the @organisations@ data set uses the @organisations/@ path prefix, with routes like "organisations/search?q=Köln":http://beta.lobid.org/organisations/search?q=Köln, documented at "organisations/":http://beta.lobid.org/organisations. _This allows us to use multiple modules under a single domain_.
+- Get := Data modules support GET requests for direct access to an entity using an ID path segment: "organisations/DE-605":http://beta.lobid.org/organisations/DE-605. _This provides URLs for every entity in our data modules_.
+- Result := Data modules return @application/json; charset=utf-8@. All entities in a single data module have the same format (type, schema). This allows API users to query what they get. For example, we can look at "organisations/DE-2297":http://beta.lobid.org/organisations/DE-2297 to create a query like "q=location.address.addressLocality:Berlin":http://beta.lobid.org/organisations/search?q=location.address.addressLocality:Berlin. _This makes the supported queries discoverable._
+- Query := Data modules support GET requests with a @q@ query parameter that can be used for simple full text queries: "q=Köln":http://beta.lobid.org/organisations/search?q=Köln, and for querying specific fields: "q=name:Landesarchiv+Berlin":http://beta.lobid.org/organisations/search?q=name:Landesarchiv+Berlin. Fields can be nested: "q=location.address.postalCode:50667":http://beta.lobid.org/organisations/search?q=location.address.postalCode:50667. _This provides a generic query mechanism with full access to the specifics of the data set._
+
 h2(#micro-architecture). Micro architecture
 
 The micro architecture of the individual modules is not mandated on an organisation-wide level.

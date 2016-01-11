@@ -90,6 +90,38 @@
 		<p>
 			<img style="width:750px" border="0" src="figures/macro.png"/>
 		</p>
+		<h3 id="data-module-specification">Data module specification</h3>
+		<p>Data modules provide a unified HTTP API to integrate into the hbz macro architecture:</p>
+		<dl>
+			<dt>Prefix</dt>
+			<dd>Data modules use a URL path prefix corresponding to their data set. They provide module documentation at the prefix root. For example, the 
+				<code>organisations</code> data set uses the 
+				<code>organisations/</code> path prefix, with routes like 
+				<a href="http://beta.lobid.org/organisations/search?q=Köln">organisations/search?q=Köln</a>, documented at 
+				<a href="http://beta.lobid.org/organisations">organisations/</a>. 
+				<em>This allows us to use multiple modules under a single domain</em>.
+			</dd>
+			<dt>Get</dt>
+			<dd>Data modules support GET requests for direct access to an entity using an ID path segment: 
+				<a href="http://beta.lobid.org/organisations/DE-605">organisations/DE-605</a>. 
+				<em>This provides URLs for every entity in our data modules</em>.
+			</dd>
+			<dt>Result</dt>
+			<dd>Data modules return 
+				<code>application/json; charset=utf-8</code>. All entities in a single data module have the same format (type, schema). This allows API users to query what they get. For example, we can look at 
+				<a href="http://beta.lobid.org/organisations/DE-2297">organisations/DE-2297</a> to create a query like 
+				<a href="http://beta.lobid.org/organisations/search?q=location.address.addressLocality:Berlin">q=location.address.addressLocality:Berlin</a>. 
+				<em>This makes the supported queries discoverable.</em>
+			</dd>
+			<dt>Query</dt>
+			<dd>Data modules support GET requests with a 
+				<code>q</code> query parameter that can be used for simple full text queries: 
+				<a href="http://beta.lobid.org/organisations/search?q=Köln">q=Köln</a>, and for querying specific fields: 
+				<a href="http://beta.lobid.org/organisations/search?q=name:Landesarchiv+Berlin">q=name:Landesarchiv+Berlin</a>. Fields can be nested: 
+				<a href="http://beta.lobid.org/organisations/search?q=location.address.postalCode:50667">q=location.address.postalCode:50667</a>. 
+				<em>This provides a generic query mechanism with full access to the specifics of the data set.</em>
+			</dd>
+		</dl>
 		<h2 id="micro-architecture">Micro architecture</h2>
 		<p>The micro architecture of the individual modules is not mandated on an organisation-wide level.</p>
 		<p>For a sample micro architecture, see the Lobid micro architecture (which uses Metafacture for data transformations) below.</p>
