@@ -235,7 +235,7 @@
 		<h3 id="dev-process-github">GitHub</h3>
 		<p>We develop our software on GitHub. We don&#8217;t publish the results of our development process on GitHub, but instead do the actual development (track issues, change code, discuss changes) in the open. Publishing our development process in this document is part of this transparent process.</p>
 		<h4 id="dev-process-github-flow">GitHub Flow</h4>
-		<p>We use the simple GitHub workflow: the master branch in always in a deployable state, new features are developed in feature branches, which are merged into the master branch using pull requests. See details on 
+		<p>We use the simple GitHub workflow: the master branch in always the version that is actually deployed to production, new features are developed in feature branches, which are merged into the master after review in pull requests. See details on 
 			<a href="https://guides.github.com/introduction/flow/">the GitHub flow</a>.
 		</p>
 		<h4 id="dev-process-github-issues">GitHub Issues</h4>
@@ -244,7 +244,7 @@
 			<code>bug</code> label and are prioritized over new features.
 		</p>
 		<h3 id="dev-process-waffle">Waffle Board</h3>
-		<p>For a unified view of all issues in the various repositories we us a board at 
+		<p>For a unified view of all issues in the various repositories we use a board at 
 			<a href="https://waffle.io/hbz/lobid">https://waffle.io/hbz/lobid</a>.
 		</p>
 		<p>The columns of our board correspond the subsequent stages of our development process, from left to right:</p>
@@ -255,7 +255,7 @@
 			<code>-&gt;</code> Deploy 
 			<code>-&gt;</code> Done
 		</p>
-		<p>Columns correspond to a specific label on GitHub issues, i.e. moving a card from 
+		<p>Columns correspond to a specific GitHub issues label, i.e. moving a card from 
 			<code>working</code> to 
 			<code>review</code> is the same as removing the 
 			<code>working</code> label and adding the 
@@ -275,27 +275,41 @@
 		<h4 id="dev-process-working">Working</h4>
 		<p>When we start working on an issue, we move it to the 
 			<code>working</code> column. Ideally, every person should only work on one issue at a time. That way the 
-			<code>working</code> column provides an overview of who is currently working on what.
+			<code>working</code> column provides an overview of who is currently working on what. For commits that resolve their corresponding issue, we include 
+			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a>.
 		</p>
 		<h4 id="dev-process-review">Review</h4>
 		<p>When an issue is completed on the technical side, we push the corresponding commits to a feature branch that contains the corresponding issue number (and additional info for convenience), e.g. 
-			<code>issue-111-ui</code>. If possible, we then deploy the changes from the feature branch to our staging system (by merging the feature branch into the master branch of the staging system, therefore simulating what will happen when we deploy to production).
+			<code>111-ui</code>. If the issue is in a different repo than the branch, we prefix the repo name, e.g. 
+			<code>nwbib-111-ui</code>. If possible, we then deploy the changes from the feature branch to our staging system (by merging the feature branch into the master branch of the staging system, therefore simulating what will happen when we deploy to production). We then provide instructions on how to test the changes in the corresponding issue, and assign that to a dedicated team member (the product owner) for functional review. At the end of the functional review, the reviewer posts a 
+			<code>+1</code> comment, moves the corresponding card to the 
+			<code>deploy</code> column, and assigns it to the developer who submitted it for review.
 		</p>
-		<p>We then open a pull request for the feature branch with a summary of the changes, a link to the corresponding issue, and instructions on how to test the behaviour on staging. We leave the pull request unassigned to signal to the team members that it is ready for code review. At the same time, we provide instructions on how to test the changes in the corresponding issue, and assign that to a dedicated team member (the product owner) for functional review. We finally move both cards to the 
-			<code>review</code> column.
+		<p>When submitting an issue for review, we also open a corresponding pull request for the feature branch with a summary of the changes, a link to the corresponding issue using 
+			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> (this will result in Waffle grouping the issue and corresponding pull requests in a single card), and instructions on how to test the behaviour on staging. We leave the pull request self-assigned until the functional review concludes with a 
+			<code>+1</code>, i.e. the code is ready for review. If required, the developer then rebases the feature branch or merges the master branch to get the feature branch up to date with the master branch. We then unassigned the pull request to signal to the team members that it is ready for code review.
 		</p>
 		<p>We use Travis CI for continuous integration. The CI is integrated into the GitHub review process: when a pull request is opened, Travis builds the resulting merged code and provides feedback right in the pull request (you can see the build status in the pull request preview, before submitting the pull request). For details, see 
-			<a href="http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/">this post</a>. The developer who pushed the code should ensure the Travis build was successful before submitting the pull request for review.
+			<a href="http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/">this post</a>. The developer who pushed the code should ensure the Travis build was successful before submitting the pull request for review (i.e. unassigning it). Changes to the code during code review are created in additional commits, which the developer pushes to the feature branch. They are added to the existing pull request automatically. See 
+			<a href="https://help.github.com/articles/using-pull-requests/">details on pull requests</a>.
 		</p>
 		<h4 id="dev-process-deploy">Deploy</h4>
-		<p>The reviewers review the code and feature or bugfix based on the provided instructions (usually links to the staging system), and provide feedback on the code or functionality. For the code review, changes to the code are created in additional commits, which the developer pushes to the feature branch. They are added to the existing pull request automatically. See 
-			<a href="https://help.github.com/articles/using-pull-requests/">details on pull requests</a>. At the end of the code review, the reviewer merges the pull request, and deletes the corresponding branch. At the end of the functional review, the reviewer posts a 
-			<code>+1</code> comment, moves the corresponding card to the 
-			<code>deploy</code> column, and assigns it to the developer who submitted it for review, who deploys it to production.
+		<p>At the end of the code review, the code reviewer merges the pull request, deploys the new functionality to production, and deletes the corresponding branch. We don&#8217;t deploy to production on Fridays or before leaving for a vacation. To ensure that the master is always the deployed state, and to only close issues when they are actually deployed to production, merging the pull request should 
+			<em>not</em> happen using the GitHub web UI, but on the production server:
+		</p>
+		<p>1. Pull the feature branch into the master, e.g. 
+			<code>git -c "user.name=First Last" -c "user.email=name@example.com" pull --no-ff origin 111-ui</code> (we have a single deployment user on our server, so we have to pass our name and email to the git pull command)
+			<br/>2. Switch proxy to staging, restart production app, test new functionality, switch proxy back to production if all is fine
+			<br/>3. Amend the merge commit: 
+			<code>git commit --amend</code> to include a reference to the resolved issue with instructions on how to replicate the change in production (usually a link to the production system demonstrating the new functionality), e.g. 
+			<code>Resolves #238. See http://lobid.org/nwbib/search?q=Neuehrenfeld</code>
+			<br/>4. Push the changes to master: 
+			<code>git push origin master</code>, and delete the feature branch, e.g. 
+			<code>git push origin :111-ui</code>
 		</p>
 		<h4 id="dev-process-done">Done</h4>
-		<p>When the changes are deployed to production, we add a comment in the corresponding issue with instructions on how to replicate the change in production (usually a link to the production system). We don&#8217;t deploy to production on Fridays or before leaving for a vacation. We finally close the issue in GitHub or move it to the 
-			<code>done</code> column in the board.
+		<p>After deployment, both the issue and the pull request are closed automatically, and their card is moved to the 
+			<code>done</code> column.
 		</p>
 		<h3 id="dev-process-conventions">Conventions</h3>
 		<h4 id="dev-process-coding-conventions">Coding Conventions</h4>
