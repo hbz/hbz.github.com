@@ -275,9 +275,10 @@
 		<h4 id="dev-process-working">Working</h4>
 		<p>When we start working on an issue, we move it to the 
 			<code>working</code> column. Ideally, every person should only work on one issue at a time. That way the 
-			<code>working</code> column provides an overview of who is currently working on what.
-			If someone wants to grab an other's working issue this must be approved by the issue holder.
-			We include <a href="https://guides.github.com/features/issues/#notifications">references to the corresponding issue</a> in the commit messages. We 
+			<code>working</code> column provides an overview of who is currently working on what. Issues are only moved into or out of the working column by the person who is assigned. Issues in working are only reassigned by the person who is currently assigned.
+		</p>
+		<p>We include 
+			<a href="https://guides.github.com/features/issues/#notifications">references to the corresponding issue</a> in the commit messages. We 
 			<em>don&#8217;t</em> use 
 			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> in the commit messages, since the resolution decision does not happen during implementation, but during review (see below).
 		</p>
