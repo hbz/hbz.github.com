@@ -302,14 +302,14 @@
 		<p>After the code review, the developer of the feature merges the pull request, deploys the new functionality to production, and deletes the corresponding branch. We don&#8217;t deploy to production on Fridays or before leaving for a vacation. To ensure that the master is always the deployed state, and to only close issues when they are actually deployed to production, merging the pull request should 
 			<em>not</em> happen using the GitHub web UI, but on the production server:
 		</p>
-		<p>1. To avoid interruption of the service during deploy, configure the proxy to point to the staging server while updating the production server. In order to so, log in to the proxy and edit the Apache vhost file, e.g. 
+		<p>1. To avoid interruption of the service during deployment, configure the proxy to point to the staging server while updating the production server. In order to so, log in to the proxy server and edit the Apache vhost file, e.g. 
 			<code>/etc/apache2/vhosts.d/beta.lobid.org.conf</code>. In this file, replace the port for 
 			<code>ProxyPass</code> and 
 			<code>ProxyPassReverse</code> with the port for the staging environment. Save the file and restart the Apache server: 
 			<code>rcapache2 restart-graceful</code>
 			<br/>2. Pull the feature branch into the master, e.g. 
 			<code>git -c "user.name=First Last" -c "user.email=name@example.com" pull --no-ff origin 111-ui</code> (we have a single deployment user on our server, so we have to pass our name and email to the git pull command)
-			<br/>3. Switch proxy to staging, restart production app, test new functionality, switch proxy back to production if all is fine
+			<br/>3. Restart the production app and test new functionality
 			<br/>4. Amend the merge commit: 
 			<code>git commit --amend</code> to include a reference to the resolved issue using 
 			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> and instructions on how to replicate the change in production (usually a link to the production system demonstrating the new functionality), e.g. 
@@ -317,9 +317,9 @@
 			<br/>5. Push the changes to master: 
 			<code>git push origin master</code>, and delete the feature branch, e.g. 
 			<code>git push origin :111-ui</code>
-			<br/>6. If you accomplished step 1, make sure you revert the port modification such that the proxy points to the production environment. Again, edit the Apache vhost file and replace the port for 
+			<br/>6. Revert the port modification from step 1 such that the proxy points to the production app. Again, edit the Apache vhost file and replace the port for 
 			<code>ProxyPass</code> and 
-			<code>ProxyPassReverse</code> with the port for the production environment. Save the file and restart the Apache server: 
+			<code>ProxyPassReverse</code> with the port for the production app. Save the file and restart the Apache server: 
 			<code>rcapache2 restart-graceful</code>
 		</p>
 		<h4 id="dev-process-done">Done</h4>
