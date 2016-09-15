@@ -94,9 +94,7 @@ h2(#application-modules-oer-world-map). OER world map
 
 "https://github.com/hbz/oerworldmap":https://github.com/hbz/oerworldmap
 
-In 2014, hbz has developed a prototype for an OER world map, funded by the Hewlett Foundation. The prototype is self-contained, and does not use any data modules in our macro architecture. It's data micro architecture is a mix of Lobid 1.0 style transformations (Metafacture crafting N-Triples), indexing (generated, non-nested JSON-LD in Elasticsearch) and API (Playframework). The UI is based on Drupal.
-
-In 2015, hbz and Felix Ostrowski will implement a productive version of an OER world map, again funded by the Hewlett Foundation.
+Since 2015, hbz and "Felix Ostrowski":https://github.com/literarymachine (graphthinking) have been developing the "OER world map":https://oerworldmap.org, funded by the Hewlett Foundation.
 
 h1(#lobid). Lobid
 
