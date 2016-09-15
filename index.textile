@@ -172,9 +172,9 @@ We have different Git repositories under different GitHub organisations. New rep
 
 h3(#dev-process-waffle). Waffle Board
 
-For a unified view of all issues in the various repositories we use a board at "https://waffle.io/hbz/lobid":https://waffle.io/hbz/lobid.
+For a unified view of all issues in the various repositories we use a board at "https://waffle.io/hbz/lobid":https://waffle.io/hbz/lobid. The OER World Map project has a separate board at https://waffle.io/hbz/oerworldmap":https://waffle.io/hbz/oerworldmap.
 
-The columns of our board correspond the subsequent stages of our development process, from left to right:
+The columns of our boards correspond the subsequent stages of our development process, from left to right:
 
 Backlog @->@ Ready @->@ Working @->@ Review @->@ Deploy @->@ Done
 
@@ -218,6 +218,10 @@ After the code review, the developer of the feature merges the pull request, dep
 h4(#dev-process-done). Done
 
 After deployment, both the issue and the pull request are closed automatically, and their card is moved to the @done@ column.
+
+h4(#dev-process-stories). Stories
+
+The OER World Map board has an additional @Stories@ column to collect and prioritize "user stories":https://en.wikipedia.org/wiki/User_story.
 
 h3(#dev-process-conventions). Conventions
 
