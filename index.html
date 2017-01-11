@@ -283,20 +283,29 @@
 			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> in the commit messages, since the resolution decision does not happen during implementation, but during review (see below).
 		</p>
 		<h4 id="dev-process-review">Review</h4>
+		<h5 id="Submitchanges">Submit changes</h5>
 		<p>When an issue is completed on the technical side, we push the corresponding commits to a feature branch that contains the corresponding issue number (and additional info for convenience, using camelCaseFormatting), e.g. 
 			<code>111-featureDesciption</code>. If the issue is in a different repo than the branch, we prefix the repo name, e.g. 
-			<code>nwbib-111-ui</code>. If possible, we then deploy the changes from the feature branch to our staging system (by merging the feature branch into the master branch of the staging system, therefore simulating what will happen when we deploy to production). We then provide instructions on how to test the changes in the corresponding issue, and assign that to a dedicated team member (the product owner) for functional review. At the end of the functional review, the reviewer posts a 
-			<code>+1</code> comment, unassigns the issue, and assigns the corresponding pull request for code review (see section below).
+			<code>nwbib-111-ui</code>. If possible, we then deploy the changes from the feature branch to our staging system (by merging the feature branch into the master branch of the staging system, therefore simulating what will happen when we deploy to production).
 		</p>
-		<p>When submitting an issue for review, the developer also opens a corresponding pull request for the feature branch with a summary of the changes, a link to the corresponding issue using 
-			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> (this will result in Waffle grouping the issue and corresponding pull requests in a single card), and instructions on how to test the behaviour on staging. We leave the pull request self-assigned until the functional review concludes with a 
-			<code>+1</code>, i.e. the code is ready for review (see section above).
+		<p>To submit the changes for review, we now open a pull request for the feature branch with a summary of the changes, a link to the corresponding issue using 
+			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> (this will result in Waffle grouping the issue and corresponding pull requests in a single card), and instructions on how to test the changed behavior on staging. We assign the pull request to a dedicated team member (the product owner) for functional review.
 		</p>
-		<p>We use Travis CI for continuous integration. The CI is integrated into the GitHub review process: when a pull request is opened, Travis builds the resulting merged code and provides feedback right in the pull request. For details, see 
-			<a href="http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/">this post</a>. The developer who pushed the code should ensure the Travis build was successful. Changes to the code during code review are created in additional commits, which the developer pushes to the feature branch. They are added to the existing pull request automatically. See 
-			<a href="https://help.github.com/articles/using-pull-requests/">details on pull requests</a>. At the end of the code review, the reviewer adds a 
-			<code>+1</code> comment on the pull request, reassigns it to the developer, and moves the associated issue to the 
+		<h5 id="Functionalreview">Functional review</h5>
+		<p>At the end of the functional review, the reviewer posts a 
+			<code>+1</code> comment on the pull request, and reassigns it to a code reviewer.
+		</p>
+		<h5 id="Codereview">Code review</h5>
+		<p>At the end of the code review, the reviewer posts a 
+			<code>+1</code> comment, reassigns the pull request to its original creator, and moves the associated issue to the 
 			<code>deploy</code> column.
+		</p>
+		<h5 id="Continuousintegration">Continuous integration</h5>
+		<p>We use Travis CI for continuous integration. The CI is integrated into the GitHub review process: when a pull request is opened, Travis builds the resulting merged code and provides feedback right in the pull request. For details, see 
+			<a href="http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/">this post</a>. The creator of the pull request should ensure the Travis build was successful.
+		</p>
+		<p>Changes during the review process are created in additional commits, which are pushed to the feature branch. They are added to the existing pull request automatically. See 
+			<a href="https://help.github.com/articles/using-pull-requests/">details on pull requests</a>.
 		</p>
 		<h4 id="dev-process-deploy">Deploy</h4>
 		<p>After the code review, the developer of the feature merges the pull request, deploys the new functionality to production, and deletes the corresponding branch. We don&#8217;t deploy to production on Fridays or before leaving for a vacation. To ensure that the master is always the deployed state, and to only close issues when they are actually deployed to production, merging the pull request should 
