@@ -308,7 +308,7 @@
 			<a href="https://help.github.com/articles/using-pull-requests/">details on pull requests</a>.
 		</p>
 		<h4 id="dev-process-deploy">Deploy</h4>
-		<p>After the code review, the developer of the feature merges the pull request, deploys the new functionality to production, and deletes the corresponding branch. We don&#8217;t deploy to production on Fridays or before leaving for a vacation. To ensure that the master is always the deployed state, and to only close issues when they are actually deployed to production, merging the pull request should 
+		<p>After the code review, the developer of the feature merges the pull request, deploys the new functionality to production, and deletes the corresponding branch. We don&#8217;t deploy to production on Friday afternoons or right before leaving for a vacation. To ensure that the master is always the deployed state, and to only close issues when they are actually deployed to production, merging the pull request should 
 			<em>not</em> happen using the GitHub web UI, but on the production server:
 		</p>
 		<p>1. To avoid interruption of the service during deployment, configure the proxy to point to the staging server while updating the production server. In order to so, log in to the proxy server and edit the Apache vhost file, e.g. 
