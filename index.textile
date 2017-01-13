@@ -222,7 +222,7 @@ Changes during the review process are created in additional commits, which are p
 
 h4(#dev-process-deploy). Deploy
 
-After the code review, the developer of the feature merges the pull request, deploys the new functionality to production, and deletes the corresponding branch. We don't deploy to production on Fridays or before leaving for a vacation. To ensure that the master is always the deployed state, and to only close issues when they are actually deployed to production, merging the pull request should _not_ happen using the GitHub web UI, but on the production server:
+After the code review, the developer of the feature merges the pull request, deploys the new functionality to production, and deletes the corresponding branch. We don't deploy to production on Friday afternoons or right before leaving for a vacation. To ensure that the master is always the deployed state, and to only close issues when they are actually deployed to production, merging the pull request should _not_ happen using the GitHub web UI, but on the production server:
 
 1. To avoid interruption of the service during deployment, configure the proxy to point to the staging server while updating the production server. In order to so, log in to the proxy server and edit the Apache vhost file, e.g. @/etc/apache2/vhosts.d/beta.lobid.org.conf@. In this file, replace the port for @ProxyPass@ and @ProxyPassReverse@ with the port for the staging environment. Save the file and restart the Apache server: @rcapache2 restart-graceful@
 2. Pull the feature branch into the master, e.g. @git -c "user.name=First Last" -c "user.email=name@example.com" pull --no-ff origin 111-ui@ (we have a single deployment user on our server, so we have to pass our name and email to the git pull command)
