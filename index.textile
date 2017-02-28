@@ -212,7 +212,7 @@ h5. Functional review
 
 To submit the changes for functional review, we now add instructions and links for testing the changed behavior on the stage or test system in the issue, assign the issue for functional review, and move it to the @review@ column.
 
-If the reviewers find problems during the review, they describe the issues, providing links that show the behavior, and unassign themselves (the issue is now unassigned in the review column, and should be picked up by another team member to fix the described issues).
+If the reviewers find problems during the review, they describe the issues, providing links that show the behavior, and reassign the team member that submitted the issue for review, leaving the issue in the review column.
 
 If everything works as expected, the reviewers post a @+1@ comment on the issue, unassign the issue, and assign the corresponding pull request for code review (the pull request is linked from the issue due to the closing keywords used in the pull request).
 
