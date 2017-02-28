@@ -283,53 +283,67 @@
 			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> in the commit messages, since the resolution decision does not happen during implementation, but during review (see below).
 		</p>
 		<h4 id="dev-process-review">Review</h4>
-		<h5 id="Submitchanges">Submit changes</h5>
-		<p>When an issue is completed on the technical side, we push the corresponding commits to a feature branch that contains the corresponding issue number (and additional info for convenience, using camelCaseFormatting), e.g. 
-			<code>111-featureDesciption</code>. If the issue is in a different repo than the branch, we prefix the repo name, e.g. 
-			<code>nwbib-111-ui</code>. If possible, we then deploy the changes from the feature branch to our staging system (by merging the feature branch into the master branch of the staging system, therefore simulating what will happen when we deploy to production).
+		<h5 id="Deploychanges">Deploy changes</h5>
+		<p>When an issue is completed on the technical side, we push the corresponding commits to a feature branch that contains the corresponding issue number and additional info for convenience (using camelCaseFormatting, e.g. 
+			<code>111-featureDesciption</code>). If the issue is in a different repo than the branch, we prefix the repo name, e.g. 
+			<code>nwbib-111-ui</code>.
 		</p>
-		<p>To submit the changes for review, we now open a pull request for the feature branch with a summary of the changes, a link to the corresponding issue using 
-			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> (this will result in Waffle grouping the issue and corresponding pull requests in a single card), and instructions on how to test the changed behavior on staging. We assign the pull request to a dedicated team member (the product owner) for functional review.
+		<p>We then open a pull request for the feature branch with a summary of the changes as its title, and a link to the corresponding issue using 
+			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> (like 
+			<em>Will resolve #123</em>, this will make Waffle group the issue and corresponding pull requests in a single card). We leave the pull request unassigned at this point.
+		</p>
+		<p>We then deploy the changes from the feature branch to our stage (full index) or test (small index) system by merging the feature branch on the server (into the 
+			<code>stage</code> branch in the 
+			<code>*-stage</code> repo or the 
+			<code>test</code> branch in the 
+			<code>*-test</code> repo).
 		</p>
 		<h5 id="Functionalreview">Functional review</h5>
-		<p>At the end of the functional review, the reviewer posts a 
-			<code>+1</code> comment on the pull request, and reassigns it to a code reviewer.
+		<p>To submit the changes for functional review, we now add instructions and links for testing the changed behavior on the stage or test system in the issue, assign the issue for functional review, and move it to the 
+			<code>review</code> column.
+		</p>
+		<p>If the reviewers find problems during the review, they describe the issues, providing links that show the behavior, and unassign themselves (the issue is now unassigned in the review column, and should be picked up by another team member to fix the described issues).</p>
+		<p>If everything works as expected, the reviewers post a 
+			<code>+1</code> comment on the issue, unassign the issue, and assign the corresponding pull request for code review (the pull request is linked from the issue due to the closing keywords used in the pull request).
 		</p>
 		<h5 id="Codereview">Code review</h5>
+		<p>Changes during the review process are created in additional commits, which are pushed to the feature branch. They are added to the existing pull request automatically. See 
+			<a href="https://help.github.com/articles/using-pull-requests/">details on pull requests</a>.
+		</p>
 		<p>At the end of the code review, the reviewer posts a 
 			<code>+1</code> comment, reassigns the pull request to its original creator, and moves the associated issue to the 
-			<code>deploy</code> column.
+			<code>deploy</code> column (or changes the label on the issue using the GitHub UI, this will move the card with its associated pull requests into the 
+			<em>deploy</em> column).
 		</p>
 		<h5 id="Continuousintegration">Continuous integration</h5>
 		<p>We use Travis CI for continuous integration. The CI is integrated into the GitHub review process: when a pull request is opened, Travis builds the resulting merged code and provides feedback right in the pull request. For details, see 
-			<a href="http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/">this post</a>. The creator of the pull request should ensure the Travis build was successful.
-		</p>
-		<p>Changes during the review process are created in additional commits, which are pushed to the feature branch. They are added to the existing pull request automatically. See 
-			<a href="https://help.github.com/articles/using-pull-requests/">details on pull requests</a>.
+			<a href="http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/">this post</a>. The creator of the pull request should ensure the Travis build was successful. Since code reviews conclude with a 
+			<code>+1</code> comment (and not with a merge), the reviewers can give their 
+			<code>+1</code> even if the Travis build is failing.
 		</p>
 		<h4 id="dev-process-deploy">Deploy</h4>
 		<p>After the code review, the developer of the feature merges the pull request, deploys the new functionality to production, and deletes the corresponding branch. We don&#8217;t deploy to production on Friday afternoons or right before leaving for a vacation. To ensure that the master is always the deployed state, and to only close issues when they are actually deployed to production, merging the pull request should 
 			<em>not</em> happen using the GitHub web UI, but on the production server:
 		</p>
-		<p>1. To avoid interruption of the service during deployment, configure the proxy to point to the staging server while updating the production server. In order to so, log in to the proxy server and edit the Apache vhost file, e.g. 
-			<code>/etc/apache2/vhosts.d/beta.lobid.org.conf</code>. In this file, replace the port for 
+		<p>1. To avoid interruption of the service during deployment, configure the proxy to point to the staging server while updating the production server. In order to so, log in to the proxy server and edit the Apache vhost file for the production system, e.g. 
+			<code>/etc/apache2/vhosts.d/lobid.org.conf</code>. In this file, replace the port for 
 			<code>ProxyPass</code> and 
-			<code>ProxyPassReverse</code> with the port for the staging environment. Save the file and restart the Apache server: 
-			<code>rcapache2 restart-graceful</code>
+			<code>ProxyPassReverse</code> with the port for the stage or test environment. Save the file and restart the Apache server: 
+			<code>apache2ctl graceful</code>
 			<br/>2. Pull the feature branch into the master, e.g. 
 			<code>git -c "user.name=First Last" -c "user.email=name@example.com" pull --no-ff origin 111-ui</code> (we have a single deployment user on our server, so we have to pass our name and email to the git pull command)
-			<br/>3. Restart the production app and test new functionality
+			<br/>3. Restart the production app and test the new functionality
 			<br/>4. Amend the merge commit: 
 			<code>git commit --amend</code> to include a reference to the resolved issue using 
 			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> and instructions on how to replicate the change in production (usually a link to the production system demonstrating the new functionality), e.g. 
-			<code>Resolves #238. See http://lobid.org/nwbib/search?q=Neuehrenfeld</code>
+			<code>Resolves #238. See http://nwbib.de/search?q=Neuehrenfeld</code>
 			<br/>5. Push the changes to master: 
 			<code>git push origin master</code>, and delete the feature branch, e.g. 
 			<code>git push origin :111-ui</code>
 			<br/>6. Revert the port modification from step 1 such that the proxy points to the production app. Again, edit the Apache vhost file and replace the port for 
 			<code>ProxyPass</code> and 
 			<code>ProxyPassReverse</code> with the port for the production app. Save the file and restart the Apache server: 
-			<code>rcapache2 restart-graceful</code>
+			<code>apache2ctl graceful</code>
 		</p>
 		<h4 id="dev-process-done">Done</h4>
 		<p>After deployment, both the issue and the pull request are closed automatically, and their card is moved to the 
