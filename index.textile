@@ -200,36 +200,42 @@ We include "references to the corresponding issue":https://guides.github.com/fea
 
 h4(#dev-process-review). Review
 
-h5. Submit changes
+h5. Deploy changes
 
-When an issue is completed on the technical side, we push the corresponding commits to a feature branch that contains the corresponding issue number (and additional info for convenience, using camelCaseFormatting), e.g. @111-featureDesciption@. If the issue is in a different repo than the branch, we prefix the repo name, e.g. @nwbib-111-ui@. If possible, we then deploy the changes from the feature branch to our staging system (by merging the feature branch into the master branch of the staging system, therefore simulating what will happen when we deploy to production).
+When an issue is completed on the technical side, we push the corresponding commits to a feature branch that contains the corresponding issue number and additional info for convenience (using camelCaseFormatting, e.g. @111-featureDesciption@). If the issue is in a different repo than the branch, we prefix the repo name, e.g. @nwbib-111-ui@.
 
-To submit the changes for review, we now open a pull request for the feature branch with a summary of the changes, a link to the corresponding issue using "keywords for closing issues":https://help.github.com/articles/closing-issues-via-commit-messages/ (this will result in Waffle grouping the issue and corresponding pull requests in a single card), and instructions on how to test the changed behavior on staging. We assign the pull request to a dedicated team member (the product owner) for functional review.
+We then open a pull request for the feature branch with a summary of the changes as its title, and a link to the corresponding issue using "keywords for closing issues":https://help.github.com/articles/closing-issues-via-commit-messages/ (like _Will resolve #123_, this will make Waffle group the issue and corresponding pull requests in a single card). We leave the pull request unassigned at this point.
+
+We then deploy the changes from the feature branch to our stage (full index) or test (small index) system by merging the feature branch on the server (into the @stage@ branch in the @*-stage@ repo or the @test@ branch in the @*-test@ repo).
 
 h5. Functional review
 
-At the end of the functional review, the reviewer posts a @+1@ comment on the pull request, and reassigns it to a code reviewer.
+To submit the changes for functional review, we now add instructions and links for testing the changed behavior on the stage or test system in the issue, assign the issue for functional review, and move it to the @review@ column.
+
+If the reviewers find problems during the review, they describe the issues, providing links that show the behavior, and reassign the team member that submitted the issue for review, leaving the issue in the review column.
+
+If everything works as expected, the reviewers post a @+1@ comment on the issue, unassign the issue, and assign the corresponding pull request for code review (the pull request is linked from the issue due to the closing keywords used in the pull request).
 
 h5. Code review
 
-At the end of the code review, the reviewer posts a @+1@ comment, reassigns the pull request to its original creator, and moves the associated issue to the @deploy@ column.
+Changes during the review process are created in additional commits, which are pushed to the feature branch. They are added to the existing pull request automatically. See "details on pull requests":https://help.github.com/articles/using-pull-requests/.
+
+At the end of the code review, the reviewer posts a @+1@ comment, reassigns the pull request to its original creator, and moves the associated issue to the @deploy@ column (or changes the label on the issue using the GitHub UI, this will move the card with its associated pull requests into the _deploy_ column).
 
 h5. Continuous integration
 
-We use Travis CI for continuous integration. The CI is integrated into the GitHub review process: when a pull request is opened, Travis builds the resulting merged code and provides feedback right in the pull request. For details, see "this post":http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/. The creator of the pull request should ensure the Travis build was successful.
-
-Changes during the review process are created in additional commits, which are pushed to the feature branch. They are added to the existing pull request automatically. See "details on pull requests":https://help.github.com/articles/using-pull-requests/.
+We use Travis CI for continuous integration. The CI is integrated into the GitHub review process: when a pull request is opened, Travis builds the resulting merged code and provides feedback right in the pull request. For details, see "this post":http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/. The creator of the pull request should ensure the Travis build was successful. Since code reviews conclude with a @+1@ comment (and not with a merge), the reviewers can give their @+1@ even if the Travis build is failing.
 
 h4(#dev-process-deploy). Deploy
 
 After the code review, the developer of the feature merges the pull request, deploys the new functionality to production, and deletes the corresponding branch. We don't deploy to production on Friday afternoons or right before leaving for a vacation. To ensure that the master is always the deployed state, and to only close issues when they are actually deployed to production, merging the pull request should _not_ happen using the GitHub web UI, but on the production server:
 
-1. To avoid interruption of the service during deployment, configure the proxy to point to the staging server while updating the production server. In order to so, log in to the proxy server and edit the Apache vhost file, e.g. @/etc/apache2/vhosts.d/beta.lobid.org.conf@. In this file, replace the port for @ProxyPass@ and @ProxyPassReverse@ with the port for the staging environment. Save the file and restart the Apache server: @rcapache2 restart-graceful@
+1. To avoid interruption of the service during deployment, configure the proxy to point to the staging server while updating the production server. In order to so, log in to the proxy server and edit the Apache vhost file for the production system, e.g. @/etc/apache2/vhosts.d/lobid.org.conf@. In this file, replace the port for @ProxyPass@ and @ProxyPassReverse@ with the port for the stage or test environment. Save the file and restart the Apache server: @apache2ctl graceful@
 2. Pull the feature branch into the master, e.g. @git -c "user.name=First Last" -c "user.email=name@example.com" pull --no-ff origin 111-ui@ (we have a single deployment user on our server, so we have to pass our name and email to the git pull command)
-3. Restart the production app and test new functionality
-4. Amend the merge commit: @git commit --amend@ to include a reference to the resolved issue using "keywords for closing issues":https://help.github.com/articles/closing-issues-via-commit-messages/ and instructions on how to replicate the change in production (usually a link to the production system demonstrating the new functionality), e.g. @Resolves #238. See http://lobid.org/nwbib/search?q=Neuehrenfeld@
+3. Restart the production app and test the new functionality
+4. Amend the merge commit: @git commit --amend@ to include a reference to the resolved issue using "keywords for closing issues":https://help.github.com/articles/closing-issues-via-commit-messages/ and instructions on how to replicate the change in production (usually a link to the production system demonstrating the new functionality), e.g. @Resolves #238. See http://nwbib.de/search?q=Neuehrenfeld@
 5. Push the changes to master: @git push origin master@, and delete the feature branch, e.g. @git push origin :111-ui@
-6. Revert the port modification from step 1 such that the proxy points to the production app. Again, edit the Apache vhost file and replace the port for @ProxyPass@ and @ProxyPassReverse@ with the port for the production app. Save the file and restart the Apache server: @rcapache2 restart-graceful@
+6. Revert the port modification from step 1 such that the proxy points to the production app. Again, edit the Apache vhost file and replace the port for @ProxyPass@ and @ProxyPassReverse@ with the port for the production app. Save the file and restart the Apache server: @apache2ctl graceful@
 
 h4(#dev-process-done). Done
 
