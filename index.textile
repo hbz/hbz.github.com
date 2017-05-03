@@ -122,7 +122,7 @@ h2(#lobid-api-1). Lobid API 1.x
 
 With increasing usage, we realized that the implementation of Lobid has several issues that we started adressing in new modules and their repos.
 
-h3(#lobid-api-1-monolithic-approach). Monolithic appraoch
+h3(#lobid-api-1-monolithic-approach). Monolithic approach
 
 All data sets are handled in a single repo, resulting in complected code. Classes for one dataset transformation are used in others, meaning developers have to grasp the complexity of all datasets before being able to work on and extend the code. Continuous integration runs a lot of untouched parts with every change, resulting in long build times.
 
