@@ -76,7 +76,8 @@ h2(#data-modules-skos-lookup). skos-lookup
 
 The skos-lookup repo realizes a helper service to support "jQuery autocomplete":https://jqueryui.com/autocomplete/ widgets with "skos":https://www.w3.org/2004/02/skos/ terms over "JSONP":http://bob.ippoli.to/archives/2005/12/05/remote-json-jsonp/. The service can handle arbitrary skos datasets (even larger ones) and provides a simple elasticsearch based lookup. The implementation is oriented on other hbz data modules like "lobid-organisations":https://github.com/hbz/lobid-organisations but generates json from skos the with the standard "jsonld-java":https://github.com/jsonld-java/jsonld-java library.
 
-| Prefix | Get  | Result | Query  |
+table(table).
+|_. Prefix |_. Get  |_. Result |_. Query  |
 | @/tools/skos-lookup@ | @autocomplete?lang=de&q=QueryString&callback=mycallback&index=indexname@  | @application/json@ | @search?q=@ |
 
 h1(#application-modules). Application modules

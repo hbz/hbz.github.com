@@ -32,6 +32,9 @@
 					<li>
 						<a href="#data-modules-mabxml">mabxml-elasticsearch</a>
 					</li>
+					<li>
+						<a href="#data-modules-skos-lookup">skos-lookup</a>
+					</li>
 				</ol>
 			</li>
 			<li>
@@ -145,6 +148,40 @@
 			<a href="https://github.com/hbz/mabxml-elasticsearch">https://github.com/hbz/mabxml-elasticsearch</a>
 		</p>
 		<p>The mabxml-elasticsearch repo contains a complementary part of the current Lobid service. It roughly conforms to the common data module macro architecture and the Lobid data module micro architcture (provides an HTTP API via direct access to Elasticsearch).</p>
+		<h2 id="data-modules-skos-lookup">skos-lookup</h2>
+		<p><span class="label label-success">macro-data</span> <span class="label label-default">micro-mix</span></p>
+		<p>
+			<a href="https://github.com/hbz/skos-lookup">https://github.com/hbz/skos-lookup</a>
+		</p>
+		<p>The skos-lookup repo realizes a helper service to support 
+			<a href="https://jqueryui.com/autocomplete/">jQuery autocomplete</a> widgets with 
+			<a href="https://www.w3.org/2004/02/skos/">skos</a> terms over 
+			<a href="http://bob.ippoli.to/archives/2005/12/05/remote-json-jsonp/">JSONP</a>. The service can handle arbitrary skos datasets (even larger ones) and provides a simple elasticsearch based lookup. The implementation is oriented on other hbz data modules like 
+			<a href="https://github.com/hbz/lobid-organisations">lobid-organisations</a> but generates json from skos the with the standard 
+			<a href="https://github.com/jsonld-java/jsonld-java">jsonld-java</a> library.
+		</p>
+		<table class="table">
+			<tr>
+				<th>Prefix</th>
+				<th>Get</th>
+				<th>Result</th>
+				<th>Query</th>
+			</tr>
+			<tr>
+				<td>
+					<code>/tools/skos-lookup</code>
+				</td>
+				<td>
+					<code>autocomplete?lang=de&amp;q=QueryString&amp;callback=mycallback&amp;index=indexname</code>
+				</td>
+				<td>
+					<code>application/json</code>
+				</td>
+				<td>
+					<code>search?q=</code>
+				</td>
+			</tr>
+		</table>
 		<h1 id="application-modules">Application modules</h1>
 		<p>Some application modules that are available on GitHub are described below.</p>
 		<h2 id="application-modules-nwbib">NWBib</h2>
@@ -186,7 +223,7 @@
 		</p>
 		<h2 id="lobid-api-1">Lobid API 1.x</h2>
 		<p>With increasing usage, we realized that the implementation of Lobid has several issues that we started adressing in new modules and their repos.</p>
-		<h3 id="lobid-api-1-monolithic-approach">Monolithic appraoch</h3>
+		<h3 id="lobid-api-1-monolithic-approach">Monolithic approach</h3>
 		<p>All data sets are handled in a single repo, resulting in complected code. Classes for one dataset transformation are used in others, meaning developers have to grasp the complexity of all datasets before being able to work on and extend the code. Continuous integration runs a lot of untouched parts with every change, resulting in long build times.</p>
 		<h3 id="lobid-api-1-complex-workflow">Complex workflow</h3>
 		<p>Our workflow involves many processing steps, including Hadoop. Hadoop has turned out as not ideal for our use case, as we are using a map file to share state between processes (see the 
