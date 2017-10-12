@@ -409,6 +409,14 @@
 		<p>We don&#8217;t use the GitHub shortcuts for closing issues from commits (like 
 			<code>fixes #111</code>), since in our process, the issue is not solved by the commit, but by the reviewed change, after it&#8217;s deployed to production (see above). 
 		</p>
+		<h4 id="dev-process-force-pushing">Force Pushing</h4>
+		<p>As a general rule, we never change public commit history, i.e. we don&#8217;t use 
+			<code>--force</code> or 
+			<code>-f</code> with 
+			<code>git push</code>. The only exception are branches prefixed with 
+			<code>wip-</code> (work in progress), which are considered private to the developer. Pull requests should always be opened for non-wip branches. Local amending and rebasing before pushing to GitHub is no problem and will not require to 
+			<code>--force</code> when pushing.
+		</p>
 		<h1 id="metafacture">Metafacture</h1>
 		<p>
 			<img style="height:50px" align="right" border="0" src="logos/metafacture.png"/>
