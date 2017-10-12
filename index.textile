@@ -271,6 +271,9 @@ Every commit should be related to a GitHub issue. This allows us to understand w
 
 We don't use the GitHub shortcuts for closing issues from commits (like @fixes #111@), since in our process, the issue is not solved by the commit, but by the reviewed change, after it's deployed to production (see above). 
 
+h4(#dev-process-force-pushing). Force Pushing
+
+As a general rule, we never change public commit history, i.e. we don't use @--force@ or @-f@ with @git push@. The only exception are branches prefixed with @wip-@ (work in progress), which are considered private to the developer. Pull requests should always be opened for non-wip branches. Local amending and rebasing before pushing to GitHub is no problem and will not require to @--force@ when pushing.
 
 h1(#metafacture). Metafacture
 
