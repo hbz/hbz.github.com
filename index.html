@@ -7,84 +7,16 @@
 		<p><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 			<br/><div class="container">
 		</p>
-		<p><div class="pull-right"></p>
-		<ol class="toc" style="list-style: none;">
-			<li>
-				<a href="#common-architecture">Common architecture</a>
-				<ol style="list-style: none;">
-					<li>
-						<a href="#macro-architecture">Macro architecture</a>
-					</li>
-					<li>
-						<a href="#micro-architecture">Micro architecture</a>
-					</li>
-				</ol>
-			</li>
-			<li>
-				<a href="#data-modules">Data modules</a>
-				<ol style="list-style: none;">
-					<li>
-						<a href="#data-modules-lobid">lobid</a>
-					</li>
-					<li>
-						<a href="#data-modules-lobid-organisations">lobid-organisations</a>
-					</li>
-					<li>
-						<a href="#data-modules-mabxml">mabxml-elasticsearch</a>
-					</li>
-					<li>
-						<a href="#data-modules-skos-lookup">skos-lookup</a>
-					</li>
-				</ol>
-			</li>
-			<li>
-				<a href="#application-modules">Application modules</a>
-				<ol style="list-style: none;">
-					<li>
-						<a href="#application-modules-nwbib">NWBib</a>
-					</li>
-					<li>
-						<a href="#application-modules-edoweb">Edoweb</a>
-					</li>
-					<li>
-						<a href="#application-modules-oer-world-map">OER world map</a>
-					</li>
-				</ol>
-			</li>
-			<li>
-				<a href="#lobid">Lobid</a>
-				<ol style="list-style: none;">
-					<li>
-						<a href="#lobid-api-1">Lobid API 1.x</a>
-					</li>
-					<li>
-						<a href="#lobid-api-2">Lobid API 2.x</a>
-					</li>
-					<li>
-						<a href="#lobid-micro-architecture">Lobid micro architecture</a>
-					</li>
-					<li>
-						<a href="#dev-process">Lobid development process</a>
-					</li>
-				</ol>
-			</li>
-			<li>
-				<a href="#metafacture">Metafacture</a>
-			</li>
-			<li>
-				<a href="#eclipse">Eclipse</a>
-			</li>
-		</ol>
-		<p></div></p>
 		<p>
 			<img border="0" src="logos/hbz.png"/>
 		</p>
 		<p><div class="h1">hbz &hearts; open source</div></p>
-		<p class="lead">The hbz library service centre (Hochschulbibliothekszentrum des Landes Nordrhein-Westfalen) is a service and development agency for library and information systems. We are a federal state authority under the Ministry of Innovation, Science and Research of the German state of North Rhine-Westphalia (NRW). We build software to create, transform and publish bibliographic data. We&#8217;re increasingly creating our systems as open source software on GitHub: 
+		<p class="lead">The hbz library service centre (Hochschulbibliothekszentrum des Landes Nordrhein-Westfalen) is a service and development agency for library and information systems. We are a federal state authority under the Ministry of Culture and Science of the German state of North Rhine-Westphalia (NRW). We build software to create, transform and publish bibliographic data. We&#8217;re increasingly creating our systems as open source software on GitHub: 
 			<a href="https://github.com/hbz">https://github.com/hbz</a>
 		</p>
 		<p>The source for this document is maintained at 
-			<a href="https://github.com/hbz/hbz.github.com">https://github.com/hbz/hbz.github.com</a>
+			<a href="https://github.com/hbz/hbz.github.com">https://github.com/hbz/hbz.github.com</a> 
+			| Moved, previously on this page: <a href="lobid.html">Lobid-specific content</a>
 		</p>
 		<h1 id="common-architecture">Common architecture</h1>
 		<p>At hbz, we&#8217;re aiming to establish a common macro architecture to enable interoperability of data and application modules developed by different groups. The main idea of that macro architecture is to provide independently deployable, self-contained modules that communicate over HTTP.</p>
@@ -100,343 +32,33 @@
 			<dd>Data modules use a URL path prefix corresponding to their data set. They provide module documentation at the prefix root. For example, the 
 				<code>organisations</code> data set uses the 
 				<code>organisations/</code> path prefix, with routes like 
-				<a href="http://beta.lobid.org/organisations/search?q=Köln">organisations/search?q=Köln</a>, documented at 
-				<a href="http://beta.lobid.org/organisations">organisations/</a>. 
+				<a href="https://lobid.org/organisations/search?q=Köln">organisations/search?q=Köln</a>, documented at 
+				<a href="https://lobid.org/organisations">organisations/</a>. 
 				<em>This allows us to use multiple modules under a single domain</em>.
 			</dd>
 			<dt>Get</dt>
 			<dd>Data modules support GET requests for direct access to an entity using an ID path segment: 
-				<a href="http://beta.lobid.org/organisations/DE-605">organisations/DE-605</a>. 
+				<a href="https://lobid.org/organisations/DE-605">organisations/DE-605</a>. 
 				<em>This provides URLs for every entity in our data modules</em>.
 			</dd>
 			<dt>Result</dt>
 			<dd>Data modules return 
 				<code>application/json; charset=utf-8</code>. All entities in a single data module have the same format (type, schema). This allows API users to query what they get. For example, we can look at 
-				<a href="http://beta.lobid.org/organisations/DE-2297">organisations/DE-2297</a> to create a query like 
-				<a href="http://beta.lobid.org/organisations/search?q=location.address.addressLocality:Berlin">q=location.address.addressLocality:Berlin</a>. 
+				<a href="https://lobid.org/organisations/DE-2297">organisations/DE-2297</a> to create a query like 
+				<a href="https://lobid.org/organisations/search?q=location.address.addressLocality:Berlin">q=location.address.addressLocality:Berlin</a>. 
 				<em>This makes the supported queries discoverable.</em>
 			</dd>
 			<dt>Query</dt>
 			<dd>Data modules support GET requests with a 
 				<code>q</code> query parameter that can be used for simple full text queries: 
-				<a href="http://beta.lobid.org/organisations/search?q=Köln">q=Köln</a>, and for querying specific fields: 
-				<a href="http://beta.lobid.org/organisations/search?q=name:Landesarchiv+Berlin">q=name:Landesarchiv+Berlin</a>. Fields can be nested: 
-				<a href="http://beta.lobid.org/organisations/search?q=location.address.postalCode:50667">q=location.address.postalCode:50667</a>. 
+				<a href="https://lobid.org/organisations/search?q=Köln">q=Köln</a>, and for querying specific fields: 
+				<a href="https://lobid.org/organisations/search?q=name:Landesarchiv+Berlin">q=name:Landesarchiv+Berlin</a>. Fields can be nested: 
+				<a href="https://lobid.org/organisations/search?q=location.address.postalCode:50667">q=location.address.postalCode:50667</a>. 
 				<em>This provides a generic query mechanism with full access to the specifics of the data set.</em>
 			</dd>
 		</dl>
 		<h2 id="micro-architecture">Micro architecture</h2>
-		<p>The micro architecture of the individual modules is not mandated on an organisation-wide level.</p>
-		<p>For a sample micro architecture, see the Lobid micro architecture (which uses Metafacture for data transformations) below.</p>
-		<h1 id="data-modules">Data modules</h1>
-		<p>Some data modules that are available on GitHub are described below.</p>
-		<h2 id="data-modules-lobid">lobid</h2>
-		<p><span class="label label-success">macro-data</span> <span class="label label-warning">micro-1.0</span></p>
-		<p>
-			<a href="https://github.com/hbz/lobid">https://github.com/hbz/lobid</a>
-		</p>
-		<p>The lobid repo is the implementation of the current lobid service. It roughly conforms to the common macro architecture for data modules (it provides a JSON-LD API) and is based on the initial Lobid 1.0 data module micro architecture (see below for details).</p>
-		<h2 id="data-modules-lobid-organisations">lobid-organisations</h2>
-		<p><span class="label label-success">macro-data</span> <span class="label label-success">micro-2.0</span></p>
-		<p>
-			<a href="https://github.com/hbz/lobid-organisations">https://github.com/hbz/lobid-organisations</a>
-		</p>
-		<p>The lobid-organisations repo is a replacement for the lobid-organisations part of the current Lobid service. It contains additional data (DBS) and conforms to the common data module macro architecture and is the reference implementation for the new Lobid data module micro architecture (see above for details).</p>
-		<h2 id="data-modules-mabxml">mabxml-elasticsearch</h2>
-		<p><span class="label label-success">macro-data</span> <span class="label label-success">micro-2.0</span></p>
-		<p>
-			<a href="https://github.com/hbz/mabxml-elasticsearch">https://github.com/hbz/mabxml-elasticsearch</a>
-		</p>
-		<p>The mabxml-elasticsearch repo contains a complementary part of the current Lobid service. It roughly conforms to the common data module macro architecture and the Lobid data module micro architcture (provides an HTTP API via direct access to Elasticsearch).</p>
-		<h2 id="data-modules-skos-lookup">skos-lookup</h2>
-		<p><span class="label label-success">macro-data</span> <span class="label label-default">micro-mix</span></p>
-		<p>
-			<a href="https://github.com/hbz/skos-lookup">https://github.com/hbz/skos-lookup</a>
-		</p>
-		<p>The skos-lookup repo realizes a helper service to support 
-			<a href="https://jqueryui.com/autocomplete/">jQuery autocomplete</a> widgets with 
-			<a href="https://www.w3.org/2004/02/skos/">skos</a> terms over 
-			<a href="http://bob.ippoli.to/archives/2005/12/05/remote-json-jsonp/">JSONP</a>. The service can handle arbitrary skos datasets (even larger ones) and provides a simple elasticsearch based lookup. The implementation is oriented on other hbz data modules like 
-			<a href="https://github.com/hbz/lobid-organisations">lobid-organisations</a> but generates json from skos the with the standard 
-			<a href="https://github.com/jsonld-java/jsonld-java">jsonld-java</a> library.
-		</p>
-		<table class="table">
-			<tr>
-				<th>Prefix</th>
-				<th>Get</th>
-				<th>Result</th>
-				<th>Query</th>
-			</tr>
-			<tr>
-				<td>
-					<code>/tools/skos-lookup</code>
-				</td>
-				<td>
-					<code>autocomplete?lang=de&amp;q=QueryString&amp;callback=mycallback&amp;index=indexname</code>
-				</td>
-				<td>
-					<code>application/json</code>
-				</td>
-				<td>
-					<code>search?q=</code>
-				</td>
-			</tr>
-		</table>
-		<h1 id="application-modules">Application modules</h1>
-		<p>Some application modules that are available on GitHub are described below.</p>
-		<h2 id="application-modules-nwbib">NWBib</h2>
-		<p><span class="label label-success">macro-app</span> <span class="label label-success">micro-app</span></p>
-		<p>
-			<a href="http://github.com/hbz/nwbib">http://github.com/hbz/nwbib</a>
-		</p>
-		<p>NWBib is the official regional bibliography for the German state of North-Rhine Westfalia. It is implemented as an application on top of the Lobid API and is the reference implementation for the Lobid application module micro architecture (see above for details).</p>
-		<h2 id="application-modules-edoweb">Edoweb</h2>
-		<p><span class="label label-success">macro-app</span> <span class="label label-default">micro-mix</span></p>
-		<p>
-			<a href="https://github.com/edoweb">https://github.com/edoweb</a>
-		</p>
-		<p>Edoweb predates the hbz GitHub organisation. Its repos can be found in the 
-			<a href="https://github.com/edoweb">https://github.com/edoweb</a> organisation. It is implemented as an application on top of the Lobid API, conforming to the application module macro architecture. Its micro architecture is a mix of components that conform to the Lobid micro architecture (Elasticsearch, Playframework) and a Drupal-based UI.
-		</p>
-		<h2 id="application-modules-oer-world-map">OER world map</h2>
-		<p><span class="label label-default">macro-mix</span> <span class="label label-default">micro-mix</span></p>
-		<p>
-			<a href="https://github.com/hbz/oerworldmap">https://github.com/hbz/oerworldmap</a>
-		</p>
-		<p>In 2014, hbz has developed a prototype for an OER world map, funded by the Hewlett Foundation. The prototype is self-contained, and does not use any data modules in our macro architecture. It&#8217;s data micro architecture is a mix of Lobid 1.0 style transformations (Metafacture crafting N-Triples), indexing (generated, non-nested JSON-LD in Elasticsearch) and API (Playframework). The UI is based on Drupal.</p>
-		<p>In 2015, hbz and Felix Ostrowski will implement a productive version of an OER world map, again funded by the Hewlett Foundation.</p>
-		<h1 id="lobid">Lobid</h1>
-		<p>
-			<img style="height:50px" align="right" border="0" src="logos/lobid.png"/>
-		</p>
-		<p><span class="label label-success">macro-data</span> <span class="label label-warning">micro-1.0</span></p>
-		<p>
-			<a href="http://lobid.org">Lobid</a> is hbz&#8217;s Linked Open Data service.
-		</p>
-		<p>The code that generates the data provided by Lobid can be found in the 
-			<a href="https://github.com/lobid/lodmill">https://github.com/lobid/lodmill</a> repo (the open sourcing of the work on Lobid predates the 
-			<a href="http://github.com/hbz">http://github.com/hbz</a> organisation page which we use to host new repos, and was made available under the 
-			<a href="http://github.com/lobid">http://github.com/lobid</a> organisation page). For information on the Lobid data workflow see the included readme file. Our goal is to replace lodmill with individual data modules conforming to the common hbz macro and Lobid micro architecture (see below for details).
-		</p>
-		<p>The code that implements the web API for Lobid can be found in the 
-			<a href="https://github.com/hbz/lobid">https://github.com/hbz/lobid</a> repo. For information on the Lobid data workflow see the included readme file.
-		</p>
-		<h2 id="lobid-api-1">Lobid API 1.x</h2>
-		<p>With increasing usage, we realized that the implementation of Lobid has several issues that we started adressing in new modules and their repos.</p>
-		<h3 id="lobid-api-1-monolithic-approach">Monolithic approach</h3>
-		<p>All data sets are handled in a single repo, resulting in complected code. Classes for one dataset transformation are used in others, meaning developers have to grasp the complexity of all datasets before being able to work on and extend the code. Continuous integration runs a lot of untouched parts with every change, resulting in long build times.</p>
-		<h3 id="lobid-api-1-complex-workflow">Complex workflow</h3>
-		<p>Our workflow involves many processing steps, including Hadoop. Hadoop has turned out as not ideal for our use case, as we are using a map file to share state between processes (see the 
-			<a href="https://github.com/lobid/lodmill">https://github.com/lobid/lodmill</a> repo for details), which does not scale well. With a different appraoch, using Hadoop might still be an option, e.g. in the context of the 
-			<a href="https://github.com/culturegraph/metafacture-cluster">https://github.com/culturegraph/metafacture-cluster</a> repo (see below for information on Metafacture).
-		</p>
-		<h3 id="lobid-api-1-generated-json">Generated JSON</h3>
-		<p>The resulting JSON that we index in Elasticsearch is cumbersome to work with and limits usage: as it is JSON-LD generated from N-Triples, it has a serial structure of multiple, unnamed objects in an array under the 
-			<code>graph</code> key, instead of nested values in a typical JSON fashion. For details, see 
-			<a href="https://github.com/hbz/lobid/issues/1">https://github.com/hbz/lobid/issues/1</a>. Besides providing an inconvenient API, the format also limits our usage of Elasticsearch features: due to the non-nested structure, we cannot address specific labels in queries (like the creator&#8217;s 
-			<code>preferredName</code> vs. the subject&#8217;s 
-			<code>preferredName</code>). Also, as we use URIs as keys in our (generated) JSON, we cannot use Elasticsearch&#8217;s out of the box query string syntax for direct field access (URIs require lots of escaping in that context).
-		</p>
-		<p>The general issue with the format is that it is not crafted to conform to our requirements, but instead generated from a generic RDF representation:</p>
-		<p>
-			<img style="width:500px" border="0" src="figures/lobid-1.png"/>
-		</p>
-		<h2 id="lobid-api-2">Lobid API 2.x</h2>
-		<p><span class="label label-success">macro-data</span> <span class="label label-success">micro-2.0</span></p>
-		<p>Based on the issues we experienced with the first iteration of our Elasticsearch-based Web API, we are working on a revised approach, which we refer to as Lobid API 2.0. The general idea is to craft the representation that we actually deliver, that forms our API, and generate alternative representation, instead of the other way, as described above:</p>
-		<p>
-			<img style="width:500px" border="0" src="figures/lobid-2.png"/>
-		</p>
-		<p>We have implemented this approach for the lobid-organisations dataset at 
-			<a href="https://github.com/hbz/lobid-organisations">https://github.com/hbz/lobid-organisations</a>. We plan to adapt this to the current lobid-resources transformation.
-		</p>
-		<h2 id="lobid-micro-architecture">Lobid micro architecture</h2>
-		<p><span class="label label-success">micro-2.0</span> <span class="label label-success">micro-app</span></p>
-		<p>For increased reuse, we&#8217;re trying to apply the idea of a unified macro (see above) and micro architecture to the development of new Lobid modules. For reference implementations of the Lobid micro architecture, see 
-			<a href="https://github.com/hbz/lobid-organisations">https://github.com/hbz/lobid-organisations</a> (data module) and 
-			<a href="https://github.com/hbz/nwbib">https://github.com/hbz/nwbib</a> (application module).
-		</p>
-		<p>
-			<img style="width:500px" border="0" src="figures/lobid-micro.png"/>
-		</p>
-		<h3 id="lobid-data-modules">Lobid data modules</h3>
-		<p>
-			<em>Lobid data modules</em> are implemented with Metafacture, Elasticsearch, and the Playframework. A basic idea of the Lobid micro architecture is to provide a focused, independently deployable module that does one thing: provide 1 data set, with 1 Elasticsearch index (and thus, 1 index config file), 1 build, 1 CI config, 1 README. The goal is to have a single point of entry for each of these project facets.
-		</p>
-		<h3 id="lobid-application-modules">Lobid application modules</h3>
-		<p>
-			<em>Lobid application modules</em> share this general goal of a focussed module that does one thing. They should usually not require a Metafacture transformation (which suggests an additional data module), but may use an app-specific Elasticsearch index. They implement their HTTP data communication, URL routes, and HTML/JS/CSS rendering with the Playframework.
-		</p>
-		<h2 id="dev-process">Lobid development process</h2>
-		<p>This section documents how we create software in the Lobid team at hbz.</p>
-		<h3 id="dev-process-github">GitHub</h3>
-		<p>We develop our software on GitHub. We don&#8217;t publish the results of our development process on GitHub, but instead do the actual development (track issues, change code, discuss changes) in the open. Publishing our development process in this document is part of this transparent process.</p>
-		<h4 id="dev-process-github-flow">GitHub Flow</h4>
-		<p>We use the simple GitHub workflow: the master branch in always the version that is actually deployed to production, new features are developed in feature branches, which are merged into the master after review in pull requests. See details on 
-			<a href="https://guides.github.com/introduction/flow/">the GitHub flow</a>.
-		</p>
-		<h4 id="dev-process-github-issues">GitHub Issues</h4>
-		<p>We have different Git repositories under different GitHub organisations. New repositories are created under the 
-			<a href="http://github.com/hbz">hbz organisation</a>. We use GitHub issues to keep track of requirements, new features and bugs. Bugs (i.e. defects in existing functionality) are marked with the 
-			<code>bug</code> label and are prioritized over new features.
-		</p>
-		<h3 id="dev-process-waffle">Waffle Board</h3>
-		<p>For a unified view of all issues in the various repositories we use a board at 
-			<a href="https://waffle.io/hbz/lobid">https://waffle.io/hbz/lobid</a>.
-		</p>
-		<p>The columns of our board correspond the subsequent stages of our development process, from left to right:</p>
-		<p>Backlog 
-			<code>-&gt;</code> Ready 
-			<code>-&gt;</code> Working 
-			<code>-&gt;</code> Review 
-			<code>-&gt;</code> Deploy 
-			<code>-&gt;</code> Done
-		</p>
-		<p>Columns correspond to a specific GitHub issues label, i.e. moving a card from 
-			<code>working</code> to 
-			<code>review</code> is the same as removing the 
-			<code>working</code> label and adding the 
-			<code>review</code> label in GitHub. Issues without a label are located in the backlog column.
-		</p>
-		<h3 id="dev-process-stages">Process Stages</h3>
-		<h4 id="dev-process-backlog">Backlog</h4>
-		<p>The backlog contains all planned issues.</p>
-		<h4 id="dev-process-ready">Ready</h4>
-		<p>An item is 
-			<code>ready</code> if it&#8217;s possible to start working on it, i.e. there are no blocking dependencies and requirements are clear enough to start working. Dependencies are expressed through simple referencing of the blocking issue (e.g. 
-			<code>dependes on #111</code>), see 
-			<a href="https://guides.github.com/features/issues/#notifications">details on referencing</a>. Prioritized items (like 
-			<code>bugs</code>) are moved to the top of the 
-			<code>ready</code> column.
-		</p>
-		<h4 id="dev-process-working">Working</h4>
-		<p>When we start working on an issue, we move it to the 
-			<code>working</code> column. Ideally, every person should only work on one issue at a time. That way the 
-			<code>working</code> column provides an overview of who is currently working on what. Issues are only moved into or out of the working column by the person who is assigned. Issues in working are only reassigned by the person who is currently assigned.
-		</p>
-		<p>We include 
-			<a href="https://guides.github.com/features/issues/#notifications">references to the corresponding issue</a> in the commit messages. We 
-			<em>don&#8217;t</em> use 
-			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> in the commit messages, since the resolution decision does not happen during implementation, but during review (see below).
-		</p>
-		<h4 id="dev-process-review">Review</h4>
-		<h5 id="Deploychanges">Deploy changes</h5>
-		<p>When an issue is completed on the technical side, we push the corresponding commits to a feature branch that contains the corresponding issue number and additional info for convenience (using camelCaseFormatting, e.g. 
-			<code>111-featureDesciption</code>). If the issue is in a different repo than the branch, we prefix the repo name, e.g. 
-			<code>nwbib-111-ui</code>.
-		</p>
-		<p>We then open a pull request for the feature branch with a summary of the changes as its title, and a link to the corresponding issue using 
-			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> (like 
-			<em>Will resolve #123</em>, this will make Waffle group the issue and corresponding pull requests in a single card). We leave the pull request unassigned at this point.
-		</p>
-		<p>We then deploy the changes from the feature branch to our stage (full index) or test (small index) system by merging the feature branch on the server (into the 
-			<code>stage</code> branch in the 
-			<code>*-stage</code> repo or the 
-			<code>test</code> branch in the 
-			<code>*-test</code> repo).
-		</p>
-		<h5 id="Functionalreview">Functional review</h5>
-		<p>To submit the changes for functional review, we now add instructions and links for testing the changed behavior on the stage or test system in the issue, assign the issue for functional review, and move it to the 
-			<code>review</code> column.
-		</p>
-		<p>If the reviewers find problems during the review, they describe the issues, providing links that show the behavior, and reassign the team member that submitted the issue for review, leaving the issue in the review column.</p>
-		<p>If everything works as expected, the reviewers post a 
-			<code>+1</code> comment on the issue, unassign the issue, and assign the corresponding pull request for code review (the pull request is linked from the issue due to the closing keywords used in the pull request).
-		</p>
-		<h5 id="Codereview">Code review</h5>
-		<p>Changes during the review process are created in additional commits, which are pushed to the feature branch. They are added to the existing pull request automatically. See 
-			<a href="https://help.github.com/articles/using-pull-requests/">details on pull requests</a>.
-		</p>
-		<p>At the end of the code review, the reviewer posts a 
-			<code>+1</code> comment, reassigns the pull request to its original creator, and moves the associated issue to the 
-			<code>deploy</code> column (or changes the label on the issue using the GitHub UI, this will move the card with its associated pull requests into the 
-			<em>deploy</em> column).
-		</p>
-		<h5 id="Continuousintegration">Continuous integration</h5>
-		<p>We use Travis CI for continuous integration. The CI is integrated into the GitHub review process: when a pull request is opened, Travis builds the resulting merged code and provides feedback right in the pull request. For details, see 
-			<a href="http://blog.travis-ci.com/2012-09-04-pull-requests-just-got-even-more-awesome/">this post</a>. The creator of the pull request should ensure the Travis build was successful. Since code reviews conclude with a 
-			<code>+1</code> comment (and not with a merge), the reviewers can give their 
-			<code>+1</code> even if the Travis build is failing.
-		</p>
-		<h4 id="dev-process-deploy">Deploy</h4>
-		<p>After the code review, the developer of the feature merges the pull request, deploys the new functionality to production, and deletes the corresponding branch. We don&#8217;t deploy to production on Friday afternoons or right before leaving for a vacation. To ensure that the master is always the deployed state, and to only close issues when they are actually deployed to production, merging the pull request should 
-			<em>not</em> happen using the GitHub web UI, but on the production server:
-		</p>
-		<p>1. To avoid interruption of the service during deployment, configure the proxy to point to the staging server while updating the production server. In order to so, log in to the proxy server and edit the Apache vhost file for the production system, e.g. 
-			<code>/etc/apache2/vhosts.d/lobid.org.conf</code>. In this file, replace the port for 
-			<code>ProxyPass</code> and 
-			<code>ProxyPassReverse</code> with the port for the stage or test environment. Save the file and restart the Apache server: 
-			<code>apache2ctl graceful</code>
-			<br/>2. Pull the feature branch into the master, e.g. 
-			<code>git -c "user.name=First Last" -c "user.email=name@example.com" pull --no-ff origin 111-ui</code> (we have a single deployment user on our server, so we have to pass our name and email to the git pull command)
-			<br/>3. Restart the production app and test the new functionality
-			<br/>4. Amend the merge commit: 
-			<code>git commit --amend</code> to include a reference to the resolved issue using 
-			<a href="https://help.github.com/articles/closing-issues-via-commit-messages/">keywords for closing issues</a> and instructions on how to replicate the change in production (usually a link to the production system demonstrating the new functionality), e.g. 
-			<code>Resolves #238. See http://nwbib.de/search?q=Neuehrenfeld</code>
-			<br/>5. Push the changes to master: 
-			<code>git push origin master</code>, and delete the feature branch, e.g. 
-			<code>git push origin :111-ui</code>
-			<br/>6. Revert the port modification from step 1 such that the proxy points to the production app. Again, edit the Apache vhost file and replace the port for 
-			<code>ProxyPass</code> and 
-			<code>ProxyPassReverse</code> with the port for the production app. Save the file and restart the Apache server: 
-			<code>apache2ctl graceful</code>
-		</p>
-		<h4 id="dev-process-done">Done</h4>
-		<p>After deployment, both the issue and the pull request are closed automatically, and their card is moved to the 
-			<code>done</code> column.
-		</p>
-		<h3 id="dev-process-conventions">Conventions</h3>
-		<h4 id="dev-process-coding-conventions">Coding Conventions</h4>
-		<p>We use a custom Eclipse formatter profile to ensure consistent formatting. We use custom Eclipse compiler settings to ensure consistent coding style. The settings are checked in to the repos and require no specific setup. Code that is submitted to review should contain no warnings in Eclipse. The formatting is applied automatically through 
-			<a href="http://www.eclipseonetips.com/2009/12/13/automatically-format-and-cleanup-code-every-time-you-save/">Eclipse Save Actions</a>.
-		</p>
-		<h4 id="dev-process-git-conventions">Git Conventions</h4>
-		<p>Git commits should be as granular as possible. When working on a fix for issue X, we try not to add other things we notice (typos, formatting, refactorings, etc.) to the same commit. Eclipse has 
-			<a href="http://eclipsesource.com/blogs/2014/06/03/git-partial-staging-in-eclipse/">UI for partial staging</a>, which is very useful to keep commits focussed.
-		</p>
-		<h4 id="dev-process-commit-messages">Commit Messages</h4>
-		<p>We follow the established conventions for Git commit messages: imperative mood (e.g. 
-			<code>Fix UI issue</code>, not 
-			<code>Fixes UI issue</code>), short lines (max 72 chars), and either just one line, or one line, a blank line, and one or more paragraphs. For details, see 
-			<a href="http://chris.beams.io/posts/git-commit/">these</a> 
-			<a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">posts</a>.
-		</p>
-		<p>Every commit should be related to a GitHub issue. This allows us to understand why certain changes were applied. When committing to the same repo that contains the issue, it&#8217;s enough to just mention the issue number with a prefixed 
-			<code>#</code> mark, e.g. 
-			<code>Fix UI issue (#111)</code>. If the issue is in a different repo, we have to add the full link (in a paragraph under the summary line, see above).
-		</p>
-		<p>We don&#8217;t use the GitHub shortcuts for closing issues from commits (like 
-			<code>fixes #111</code>), since in our process, the issue is not solved by the commit, but by the reviewed change, after it&#8217;s deployed to production (see above). 
-		</p>
-		<h4 id="dev-process-force-pushing">Force Pushing</h4>
-		<p>As a general rule, we never change public commit history, i.e. we don&#8217;t use 
-			<code>--force</code> or 
-			<code>-f</code> with 
-			<code>git push</code>. The only exception are branches prefixed with 
-			<code>wip-</code> (work in progress), which are considered private to the developer. Pull requests should always be opened for non-wip branches. Local amending and rebasing before pushing to GitHub is no problem and will not require to 
-			<code>--force</code> when pushing.
-		</p>
-		<h1 id="metafacture">Metafacture</h1>
-		<p>
-			<img style="height:50px" align="right" border="0" src="logos/metafacture.png"/>
-		</p>
-		<p>Together with the German National Library (DNB) and other members of the library community, hbz established and contributes to Metafacture, a Java-based toolkit for processing library metadata. The official repos are hosted under the Culturegraph organisation on GitHub: 
-			<a href="https://github.com/culturegraph">https://github.com/culturegraph</a>. hbz maintains the Metafacture-IDE, an Eclipse-based IDE for working with Flux scripts (a workflow DSL provided by Metafacture) at 
-			<a href="https://github.com/culturegraph/metafacture-ide">https://github.com/culturegraph/metafacture-ide</a>. We also maintain a fork of the metafacture core library at 
-			<a href="https://github.com/hbz/metafacture-core">https://github.com/hbz/metafacture-core</a> and provide pure Java (without Flux) sample transformations at 
-			<a href="https://github.com/hbz/metafacture-java-examples">https://github.com/hbz/metafacture-java-examples</a>.
-		</p>
-		<h1 id="eclipse">Eclipse</h1>
-		<p>
-			<img style="height:75px" align="right" border="0" src="logos/eclipse.jpg"/>
-		</p>
-		<p>We believe that for establishing a sustainable open source infrastructure, the library world should adopt the principles described in the Eclipse Development Process to establish an open, transparent, and meritocratic community with long term support. For details see the 
-			<a href="http://waynebeaton.wordpress.com/2012/01/13/open-source-rules-of-engagement/">Open Source Rules of Engagement</a>, 
-			<a href="http://osdelivers.blackducksoftware.com/2012/10/16/open-source-governance-the-eclipse-model/">Open source governance: the Eclipse model</a> and 
-			<a href="https://lts.eclipse.org/">Eclipse Long Term Support</a>. To foster this goal, hbz is a 
-			<a href="https://eclipse.org/membership/showMember.php?member_id=1072">member of the Eclipse Foundation</a>.
-		</p>
-		<p></div></p>
+		<p>The micro architecture of the individual modules is not part of the organisation-wide macro architecture.</p>
+		<p>For a sample micro architecture, see the <a href="lobid.html">Lobid</a> micro architecture (which uses Metafacture for data transformations) below.</p>
 	</body>
 </html>
