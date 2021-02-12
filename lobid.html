@@ -151,7 +151,9 @@
 			<code>-f</code> with 
 			<code>git push</code>. The only exception are branches prefixed with 
 			<code>wip-</code> (work in progress), which are considered private to the developer. Pull requests should always be opened for non-wip branches. Local amending and rebasing before pushing to GitHub is no problem and will not require to 
-			<code>--force</code> when pushing.
+			<code>--force</code> when pushing. While we consider this general rule as directive, we condone force pushing as long as the branch has no open pull request yet 
+			and only one person is working on this branch. In case of a force push we use <code>--force-with-lease</code> to ensure that we do not overwrite any remote commits. In case of an open pull request, instead of force pushing
+			we open a new branch from master and <code>cerry-pick</code> needed commits or add new code in this branch. The old branch and the existing pull request should be closed then.
 		</p>
 		<h2 id="micro-architecture">Lobid micro architecture</h2>
 		<p>For increased reuse, we&#8217;re trying to apply the idea of a unified macro (see above) and micro architecture to the development of new Lobid modules. For reference implementations of the Lobid micro architecture, see 
