@@ -1,6 +1,6 @@
 # About
 
-This repo contains the sources for the [hbz GitHub page](http://hbz.github.com).
+This repo contains the sources for the [hbz GitHub page](http://hbz.github.io).
 
 # Figures
 
